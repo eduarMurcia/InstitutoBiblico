@@ -1,0 +1,40 @@
+# ─────────────────────────────────────────
+# Ministerio de Imprenta RV 1865 — LMS
+# ─────────────────────────────────────────
+
+Options -Indexes
+
+# Activar reescritura
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+</IfModule>
+
+# Proteger archivos sensibles
+<Files "db.php">
+    deny from all
+</Files>
+<Files "install.sql">
+    deny from all
+</Files>
+<Files "install_completo.sql">
+    deny from all
+</Files>
+
+# Forzar HTTPS
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Cabeceras de seguridad
+<IfModule mod_headers.c>
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-Content-Type-Options "nosniff"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Límite de subida
+php_value upload_max_filesize 150M
+php_value post_max_size       160M
+php_value max_execution_time  300
+php_value memory_limit        256M

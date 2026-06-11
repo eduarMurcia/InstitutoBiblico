@@ -1,0 +1,203 @@
+═══════════════════════════════════════════════════
+  MINISTERIO DE IMPRENTA RV 1865 — LMS
+  Guía de instalación paso a paso
+═══════════════════════════════════════════════════
+
+REQUISITOS DEL HOSTING
+─────────────────────
+- PHP 7.4 o superior
+- MySQL 5.7 o superior
+- cPanel o similar
+- Soporte de archivos .htaccess
+
+═══════════════════════════════════════════════════
+PASO 1 — CREAR LA BASE DE DATOS
+═══════════════════════════════════════════════════
+
+1. Entra a cPanel de tu hosting
+2. Busca "MySQL Databases" (o "Bases de datos MySQL")
+3. Crea una nueva base de datos (anota el nombre)
+4. Crea un usuario de base de datos (anota usuario y contraseña)
+5. Asigna el usuario a la base de datos con TODOS los permisos
+6. Ve a phpMyAdmin (también en cPanel)
+7. Selecciona tu base de datos en la columna izquierda
+8. Haz clic en la pestaña "SQL" (o "Importar")
+9. Copia y pega todo el contenido del archivo:
+        config/install.sql
+   y haz clic en "Ejecutar"
+
+   Esto crea todas las tablas y el usuario administrador inicial.
+
+═══════════════════════════════════════════════════
+PASO 2 — CONFIGURAR EL ARCHIVO DE CONEXIÓN
+═══════════════════════════════════════════════════
+
+Abre el archivo: config/db.php
+
+Cambia estas 4 líneas con tus datos:
+
+    define('DB_HOST', 'localhost');        ← usualmente es localhost
+    define('DB_USER', 'tu_usuario_db');   ← usuario de MySQL que creaste
+    define('DB_PASS', 'tu_password_db'); ← contraseña del usuario
+    define('DB_NAME', 'tu_nombre_db');    ← nombre de la base de datos
+    define('SITE_URL', 'https://tudominio.com'); ← tu dominio real
+
+═══════════════════════════════════════════════════
+PASO 3 — SUBIR LOS ARCHIVOS AL HOSTING
+═══════════════════════════════════════════════════
+
+Opción A — cPanel File Manager:
+1. Entra a cPanel → "Administrador de archivos"
+2. Navega a public_html/ (o la carpeta de tu dominio)
+3. Sube el archivo ZIP y extráelo ahí
+4. Los archivos deben quedar así:
+   public_html/
+     ├── index.html
+     ├── login.php
+     ├── dashboard.php
+     ├── ...
+     ├── config/
+     ├── css/
+     ├── admin/
+     ├── api/
+     └── uploads/
+
+Opción B — FTP (FileZilla):
+1. Conecta con tu cliente FTP
+2. Sube todos los archivos a public_html/
+
+═══════════════════════════════════════════════════
+PASO 4 — PERMISOS DE LA CARPETA DE AUDIO
+═══════════════════════════════════════════════════
+
+La carpeta donde se guardan los audios necesita permisos
+especiales para que PHP pueda escribir en ella.
+
+En cPanel → File Manager:
+1. Navega a uploads/audio/
+2. Clic derecho → "Change Permissions" (Cambiar permisos)
+3. Establece permisos en: 755
+   (o 775 si 755 no funciona)
+
+═══════════════════════════════════════════════════
+PASO 5 — PRIMER INGRESO COMO ADMINISTRADOR
+═══════════════════════════════════════════════════
+
+El sistema viene con un usuario administrador creado:
+
+    Correo:     admin@ministerio.com
+    Contraseña: Admin1234!
+
+⚠️  IMPORTANTE: Cambia estos datos inmediatamente después
+    de ingresar por primera vez.
+
+1. Abre tu dominio: https://tudominio.com/login.php
+2. Ingresa con las credenciales de arriba
+3. Serás redirigido al panel de administración
+4. Ve a "Usuarios" y edita tu perfil para cambiar la contraseña
+
+═══════════════════════════════════════════════════
+PASO 6 — CREAR EL PRIMER CURSO
+═══════════════════════════════════════════════════
+
+Desde el panel de administración:
+
+1. Panel Admin → "Gestionar Cursos" → "+ Nuevo Curso"
+2. Escribe el título y descripción del curso
+3. Haz clic en "Crear curso"
+4. En la lista, haz clic en "📖 Módulos" junto al curso
+5. Agrega los módulos (Módulo 1, Módulo 2, etc.)
+6. En cada módulo, haz clic en "🎧 Lecciones"
+7. Agrega lecciones y sube el archivo de audio (MP3)
+8. Cuando esté listo, activa el botón "Publicado" del curso
+
+═══════════════════════════════════════════════════
+PASO 7 — CREAR EXÁMENES (OPCIONAL)
+═══════════════════════════════════════════════════
+
+1. Panel Admin → "Exámenes" → "+ Nuevo Examen"
+2. Asigna el examen a un módulo específico
+3. Define el puntaje mínimo para aprobar (ej: 70%)
+4. Haz clic en "✎ Preguntas" para agregar preguntas
+5. Cada pregunta tiene 4 opciones (A, B, C, D)
+   y debes marcar cuál es la correcta
+
+═══════════════════════════════════════════════════
+ESTRUCTURA DE ARCHIVOS
+═══════════════════════════════════════════════════
+
+lms/
+├── index.html          → Página de bienvenida
+├── login.php           → Login y registro de estudiantes
+├── dashboard.php       → Panel del estudiante
+├── cursos.php          → Catálogo y vista de lecciones
+├── examen.php          → Tomar exámenes
+├── perfil.php          → Perfil y certificados
+├── .htaccess           → Seguridad y configuración
+│
+├── config/
+│   ├── db.php          → ⚠️ CONFIGURAR PRIMERO
+│   └── install.sql     → Ejecutar en phpMyAdmin
+│
+├── css/
+│   └── styles.css      → Estilos de la plataforma
+│
+├── includes/
+│   └── auth.php        → Manejo de sesiones
+│
+├── admin/
+│   ├── index.php       → Panel del administrador
+│   ├── cursos.php      → Gestión de cursos y audios
+│   ├── usuarios.php    → Gestión de estudiantes
+│   └── examenes.php    → Gestión de exámenes
+│
+├── api/
+│   ├── audio.php       → Servidor de audio (protegido)
+│   └── logout.php      → Cerrar sesión
+│
+└── uploads/
+    └── audio/          → Archivos de audio (subidos por admin)
+        └── .htaccess   → Bloquea acceso directo
+
+═══════════════════════════════════════════════════
+SOLUCIÓN DE PROBLEMAS COMUNES
+═══════════════════════════════════════════════════
+
+Error: "Error de conexión"
+→ Revisa los datos en config/db.php
+→ Verifica que el usuario MySQL tenga permisos
+
+Error: "No se pudo guardar el archivo"
+→ Verifica los permisos de uploads/audio/ (debe ser 755 o 775)
+
+El audio no se reproduce
+→ Verifica que el archivo se subió correctamente
+→ Los formatos soportados son: MP3, M4A, WAV, OGG, AAC
+→ El tamaño máximo por archivo es 150MB
+
+No aparece el .htaccess
+→ Es un archivo oculto. En cPanel → File Manager,
+  activa "Show Hidden Files" en Settings
+
+Los estudiantes no ven los cursos
+→ El curso debe estar marcado como "Publicado"
+  en Panel Admin → Cursos
+
+═══════════════════════════════════════════════════
+SOPORTE Y AJUSTES FUTUROS
+═══════════════════════════════════════════════════
+
+Esta plataforma está diseñada para crecer. Funciones
+que se pueden agregar en el futuro:
+
+- Notificaciones por correo al registrarse
+- Descarga de certificados en PDF
+- Estadísticas de progreso por curso
+- Múltiples administradores / pastores
+- Videos además de audio
+- Subida de archivos PDF como material de apoyo
+
+═══════════════════════════════════════════════════
+  Ministerio de Imprenta Valera 1865
+  "Escudriñad las Escrituras" — Juan 5:39
+═══════════════════════════════════════════════════

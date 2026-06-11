@@ -1,0 +1,21 @@
+# Credenciales — NUNCA subir al repo
+config/db.php
+api/google_auth.php
+
+# Archivos subidos por usuarios
+uploads/audio/*
+uploads/pdf/*
+uploads/respuestas/*
+!uploads/audio/.htaccess
+
+# Archivos de diagnóstico / temporales
+diagnostico.php
+*.log
+.DS_Store
+Thumbs.db
+
+# Carpeta interna de Claude Code
+.claude/
+
+# Repositorio anidado (si existe)
+InstitutoBiblico

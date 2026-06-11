@@ -1,0 +1,4 @@
+# Bloquear acceso directo a los archivos de audio
+# Los archivos se sirven únicamente a través de api/audio.php
+Options -Indexes
+deny from all

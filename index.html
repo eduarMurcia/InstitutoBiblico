@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ministerio de Imprenta RV 1865 — Formación Bíblica</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1.5rem; margin-top: 2rem; }
+    .feature-card {
+      background: rgba(0,20,64,0.5);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      text-align: center;
+    }
+    .feature-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+    .section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+    .cta-section {
+      background: linear-gradient(135deg, rgba(209,147,9,0.12), rgba(0,51,102,0.3));
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+    .verse-block {
+      font-family: var(--font-title);
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--gold);
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .verse-ref {
+      display: block;
+      font-style: normal;
+      font-size: 0.85rem;
+      color: var(--gray-mid);
+      margin-top: 0.75rem;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navegación -->
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">
+    <div class="brand-icon">✦</div>
+    <div class="brand-name">
+      Ministerio de Imprenta
+      <span>RV 1865</span>
+    </div>
+  </a>
+  <ul class="navbar-links">
+    <li><a href="#cursos">Cursos</a></li>
+    <li><a href="#acerca">Acerca de</a></li>
+    <li><a href="login.php">Iniciar Sesión</a></li>
+    <li><a href="registro.php" class="btn-nav">Registrarse</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">✦ &nbsp; Formación Bíblica en Línea &nbsp; ✦</p>
+    <h1>Ministerio de Imprenta<br><span style="color:var(--gold)">RV 1865</span></h1>
+    <hr class="divider-gold">
+    <p class="hero-subtitle">
+      Accede a clases de formación bíblica y teológica. Escucha, aprende y avanza a tu propio ritmo.
+    </p>
+    <div class="d-flex gap-2" style="justify-content:center; flex-wrap:wrap;">
+      <a href="registro.php" class="btn btn-primary">Comenzar ahora</a>
+      <a href="login.php" class="btn btn-outline">Iniciar sesión</a>
+    </div>
+    <p class="hero-verse">
+      "Escudriñad las Escrituras, porque a vosotros os parece que en ellas tenéis la vida eterna."
+      <span style="display:block; font-size:0.8rem; margin-top:0.5rem; opacity:0.7;">Juan 5:39</span>
+    </p>
+  </div>
+</section>
+
+<!-- Características -->
+<div class="section" id="cursos">
+  <span class="section-label">¿Qué encontrarás?</span>
+  <h2>Una plataforma diseñada<br>para tu formación</h2>
+  <hr class="divider-gold left">
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">🎧</span>
+      <h4>Clases en audio</h4>
+      <p>Escucha las lecciones grabadas por nuestros pastores cuando y donde quieras, sin necesidad de conexión permanente.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📖</span>
+      <h4>Módulos organizados</h4>
+      <p>El contenido está estructurado en cursos y módulos progresivos para guiarte paso a paso en tu crecimiento bíblico.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📝</span>
+      <h4>Exámenes de comprensión</h4>
+      <p>Al finalizar cada módulo, responde exámenes que consolidan y verifican lo aprendido en cada lección.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🏆</span>
+      <h4>Certificados</h4>
+      <p>Al completar un curso y aprobar los exámenes, recibes un certificado que acredita tu formación.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">💬</span>
+      <h4>Foro por lección</h4>
+      <p>Comparte preguntas y reflexiones con la comunidad directamente en cada clase, enriqueciendo el aprendizaje colectivo.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📊</span>
+      <h4>Seguimiento de progreso</h4>
+      <p>Visualiza tu avance en cada curso y módulo. Nunca pierdas el hilo de tu formación.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Versículo -->
+<div style="padding: 3rem 2rem; background: rgba(0,5,18,0.6);">
+  <div class="verse-block">
+    "Toda la Escritura es inspirada por Dios, y útil para enseñar, para redargüir, para corregir, para instruir en justicia."
+    <span class="verse-ref">2 Timoteo 3:16 &mdash; Reina Valera 1865</span>
+  </div>
+</div>
+
+<!-- Acerca de -->
+<div class="section" id="acerca">
+  <span class="section-label">Nuestra misión</span>
+  <h2>Promoviendo el Evangelio<br>en el mundo hispano</h2>
+  <hr class="divider-gold left">
+  <div class="grid-2" style="margin-top: 2rem;">
+    <div>
+      <p>El Ministerio de Imprenta Valera 1865 existe para promover el Evangelio de Jesucristo a las personas de habla hispana del mundo.</p>
+      <p>Esta plataforma nace para que cada creyente pueda acceder a formación bíblica sólida, sin importar su ubicación o conectividad.</p>
+      <a href="registro.php" class="btn btn-outline mt-2">Unirme al ministerio</a>
+    </div>
+    <div class="card card-gold-top">
+      <h4 style="color:var(--gold); margin-bottom:1rem;">Acceso libre y gratuito</h4>
+      <p>Regístrate con tu correo y comienza a estudiar de inmediato. Sin costos, sin barreras.</p>
+      <a href="registro.php" class="btn btn-primary btn-full mt-2">Crear mi cuenta</a>
+    </div>
+  </div>
+</div>
+
+<!-- CTA Final -->
+<div class="cta-section">
+  <span class="section-label">Comienza hoy</span>
+  <h2 style="margin-bottom:0.5rem;">Tu formación bíblica<br>te espera</h2>
+  <hr class="divider-gold">
+  <p style="color:var(--gray-soft); max-width:480px; margin:0 auto 2rem;">
+    Únete a la comunidad, accede a las clases y crece en el conocimiento de la Palabra.
+  </p>
+  <a href="registro.php" class="btn btn-primary">Registrarme gratuitamente</a>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-brand">Ministerio de Imprenta</div>
+  <p style="margin:0; color:var(--gray-mid);">RV 1865 &mdash; Formación Bíblica en Línea</p>
+  <div style="margin-top:1rem; font-size:0.8rem;">
+    <a href="login.php">Iniciar sesión</a> &nbsp;·&nbsp;
+    <a href="registro.php">Registrarse</a>
+  </div>
+</footer>
+
+</body>
+</html>
