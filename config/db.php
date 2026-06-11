@@ -1,4 +1,3 @@
 <?php
-// Las credenciales viven fuera del directorio público para no ser borradas por git deploy
-// Archivo real: /home/u294080658/private/db.php
-require_once '/home/u294080658/private/db.php';
+// Credenciales fuera del directorio lms (git no las toca) pero dentro de public_html
+require_once __DIR__ . '/../../../lms_config/db.php';
