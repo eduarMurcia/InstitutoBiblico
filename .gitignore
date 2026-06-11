@@ -1,5 +1,4 @@
 # Credenciales — NUNCA subir al repo
-config/db.php
 api/google_auth.php
 
 # Archivos subidos por usuarios
