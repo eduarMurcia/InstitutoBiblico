@@ -23,7 +23,7 @@ $conn->close();
   <style>
     body { display:flex; flex-direction:column; min-height:100vh; }
     main { flex:1; }
-    .feature-icon .ico { color: var(--azul-deep); vertical-align: 0; }
+    .feature-icon .ico { color: var(--gold); vertical-align: 0; }
     .curso-landing-card {
       background: var(--azul-pale);
       border: 1px solid var(--azul);

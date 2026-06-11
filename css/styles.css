@@ -184,7 +184,7 @@ p  { margin-bottom: 1rem; color: var(--text-soft); font-weight: var(--fw-regular
   font-size: 0.78rem;
   font-weight: 700;
 }
-.btn-nav:hover { background: var(--gold-light); color: var(--navy) !important; }
+.btn-nav:hover { background: rgba(209,147,9,0.15); color: var(--gold) !important; }
 
 /* Menú móvil */
 .nav-toggle {
