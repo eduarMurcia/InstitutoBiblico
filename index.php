@@ -1,29 +1,14 @@
 <?php
-require_once '../includes/auth.php';
-require_once '../config/db.php';
-requerir_admin();
-require_once __DIR__ . '/../includes/admin_sidebar.php';
-require_once __DIR__ . '/../includes/inspiracion.php';
+require_once 'includes/auth.php';
+require_once 'config/db.php';
+
+if (esta_logueado()) {
+    redirigir(es_admin() ? 'admin/index.php' : 'dashboard.php');
+}
 
 $conn = conectar();
-$stats = [];
-foreach (['cursos','lecciones','comentarios'] as $t) {
-    $r = $conn->query("SELECT COUNT(*) AS n FROM `$t`");
-    $stats[$t] = $r->fetch_assoc()['n'];
-}
-$r = $conn->query("SELECT COUNT(*) AS n FROM usuarios WHERE rol='estudiante'");
-$stats['estudiantes'] = $r->fetch_assoc()['n'];
-
-$usuarios_q = $conn->query("SELECT nombre, email, created_at FROM usuarios WHERE rol='estudiante' ORDER BY created_at DESC LIMIT 8");
-$ultimos_usuarios = $usuarios_q->fetch_all(MYSQLI_ASSOC);
-
-$cursos_q = $conn->query("SELECT id, titulo, publicado, created_at FROM cursos ORDER BY created_at DESC LIMIT 5");
-$ultimos_cursos = $cursos_q->fetch_all(MYSQLI_ASSOC);
-
-// Entregas pendientes
-$r = $conn->query("SELECT COUNT(*) AS n FROM respuestas_examen re JOIN preguntas p ON p.id=re.pregunta_id WHERE p.tipo IN ('abierta','archivo') AND re.revisado=0");
-$pendientes = $r ? $r->fetch_assoc()['n'] : 0;
-
+$cursos_q = $conn->query("SELECT id, titulo, descripcion, instructor FROM cursos WHERE publicado=1 ORDER BY orden, id");
+$cursos = $cursos_q ? $cursos_q->fetch_all(MYSQLI_ASSOC) : [];
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -32,141 +17,133 @@ $conn->close();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500&display=swap">
-  <title>Panel Administrativo — Instituto Bíblico Bautista</title>
-  <link rel="stylesheet" href="../css/styles.css">
+  <title>Instituto Bíblico Bautista — Formación Bíblica en Línea</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { display:flex; flex-direction:column; min-height:100vh; }
+    main { flex:1; }
+    .curso-landing-card {
+      background: rgba(0,20,64,0.4);
+      border: 1px solid rgba(209,147,9,0.2);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .curso-landing-card:hover {
+      border-color: var(--gold);
+      background: rgba(0,20,64,0.6);
+    }
+    .curso-landing-card h4 { color: #f5f0e8; margin-bottom: 0.35rem; }
+    .curso-landing-card .instructor { font-size: 0.8rem; color: var(--gold); margin-bottom: 0.5rem; }
+    .curso-landing-card p { color: rgba(245,240,232,0.65); font-size: 0.88rem; margin: 0; line-height: 1.5; }
+  </style>
 </head>
 <body>
 
-<?php admin_navbar("resumen"); ?>
+<nav class="navbar">
+  <a href="index.php" class="navbar-brand">
+    <div class="brand-icon">✦</div>
+    <div class="brand-name">Instituto Bíblico Bautista<span>RV 1865</span></div>
+  </a>
+  <ul class="navbar-links">
+    <li><a href="#cursos">Cursos</a></li>
+    <li><a href="#acerca">Acerca</a></li>
+    <li><a href="login.php" class="btn-nav">Ingresar</a></li>
+  </ul>
+  <button class="nav-toggle" onclick="document.querySelector('.navbar-links').classList.toggle('open')" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-<div class="main-layout">
-  <?php admin_sidebar("resumen"); ?>
+<main>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Formación Bíblica Gratuita</div>
+      <h1>Escucha y estudia la<br>Palabra de Dios</h1>
+      <p class="hero-subtitle">Accede a clases bíblicas y teológicas grabadas por nuestros pastores, a tu propio ritmo y desde cualquier lugar.</p>
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href="login.php?modo=registro" class="btn btn-primary" style="font-size:1rem; padding:0.75rem 2rem;">Comenzar gratis</a>
+        <a href="login.php" class="btn btn-outline" style="font-size:1rem; padding:0.75rem 2rem; border-color:rgba(255,255,255,0.3); color:#f5f0e8;">Ya tengo cuenta</a>
+      </div>
+      <p class="hero-verse">"Escudriñad las Escrituras" — Juan 5:39</p>
+    </div>
+  </section>
 
-  <main class="main-content">
-    <!-- Hero de bienvenida -->
-    <?php $v = versiculo_del_dia(); ?>
-    <section class="hero-welcome">
-      <div class="hero-text">
-        <div class="hero-eyebrow">¡Bienvenido de nuevo!</div>
-        <h1><?= sanitizar($_SESSION['nombre']) ?>, <?= sanitizar(frase_del_dia()) ?></h1>
-        <?php if ($v['texto']): ?>
-        <p class="hero-verse">
-          “<?= sanitizar($v['texto']) ?>”
-          <cite><?= sanitizar($v['cita']) ?></cite>
-        </p>
+  <!-- Características -->
+  <section class="section" style="background:var(--bg);">
+    <div style="text-align:center; margin-bottom:3rem;">
+      <span class="section-label">Lo que ofrecemos</span>
+      <h2>Todo lo que necesitas para crecer en la fe</h2>
+    </div>
+    <div class="features-grid" style="background:transparent;">
+      <?php
+      $features = [
+        ['🎧', 'Clases en audio', 'Lecciones grabadas por pastores, disponibles sin conexión.'],
+        ['📚', 'Módulos progresivos', 'Contenido organizado paso a paso para un aprendizaje sólido.'],
+        ['📝', 'Exámenes de comprensión', 'Evalúa tu entendimiento al final de cada módulo.'],
+        ['🏅', 'Certificados', 'Recibe un certificado al completar cada curso.'],
+        ['💬', 'Foros de discusión', 'Comenta y dialoga sobre cada lección con tu pastor.'],
+        ['📊', 'Seguimiento de progreso', 'Visualiza tu avance en todos los cursos.'],
+      ];
+      foreach ($features as [$icon, $title, $desc]):
+      ?>
+      <div class="feature-card">
+        <span class="feature-icon"><?= $icon ?></span>
+        <h3 style="color:#f5f0e8; margin-bottom:0.5rem;"><?= $title ?></h3>
+        <p style="color:rgba(245,240,232,0.6); margin:0; font-size:0.9rem;"><?= $desc ?></p>
+      </div>
+      <?php endforeach; ?>
+    </div>
+  </section>
+
+  <!-- Cursos disponibles -->
+  <?php if (!empty($cursos)): ?>
+  <section class="section" id="cursos" style="background:var(--navy);">
+    <div style="text-align:center; margin-bottom:3rem;">
+      <span class="section-label">Catálogo</span>
+      <h2 style="color:#f5f0e8;">Cursos disponibles</h2>
+    </div>
+    <div class="grid-2" style="max-width:900px; margin:0 auto;">
+      <?php foreach ($cursos as $c): ?>
+      <div class="curso-landing-card">
+        <h4><?= sanitizar($c['titulo']) ?></h4>
+        <?php if ($c['instructor']): ?>
+          <div class="instructor">Instructor: <?= sanitizar($c['instructor']) ?></div>
         <?php endif; ?>
-        <div class="hero-actions">
-          <a href="cursos.php?accion=nuevo" class="btn btn-primary">+ Nuevo curso</a>
-          <a href="entregas.php" class="btn btn-outline btn-lift">Ver entregas →</a>
-        </div>
-      </div>
-      <div class="hero-figure">
-        <img class="hero-img" src="../assets/hero-biblia.jpg" alt="Estudio bíblico">
-        <span class="hero-dot-gold"></span>
-        <span class="hero-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-      </div>
-    </section>
-
-    <!-- Estadísticas -->
-    <div class="grid-3 mb-4">
-      <div class="stat-card">
-        <div class="stat-icon"><?= icono('usuarios') ?></div>
-        <div>
-          <div class="stat-num"><?= $stats['estudiantes'] ?></div>
-          <div class="stat-label">Estudiantes</div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon gold"><?= icono('cursos') ?></div>
-        <div>
-          <div class="stat-num"><?= $stats['cursos'] ?></div>
-          <div class="stat-label">Cursos</div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon"><?= icono('lecciones') ?></div>
-        <div>
-          <div class="stat-num"><?= $stats['lecciones'] ?></div>
-          <div class="stat-label">Lecciones</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Acciones rápidas -->
-    <div class="card mb-4">
-      <h3 class="mb-3">Acciones rápidas</h3>
-      <div class="d-flex gap-2" style="flex-wrap:wrap;">
-        <a href="cursos.php?accion=nuevo" class="btn btn-outline btn-lift">+ Nuevo curso</a>
-        <a href="cursos.php"   class="btn btn-outline btn-lift">📖 Gestionar cursos</a>
-        <a href="usuarios.php" class="btn btn-outline btn-lift">👥 Ver estudiantes</a>
-        <a href="examenes.php" class="btn btn-outline btn-lift">✎ Gestionar exámenes</a>
-        <a href="entregas.php" class="btn btn-outline btn-lift">
-          📬 Entregas
-          <?php if ($pendientes > 0): ?>
-            <span class="badge badge-gold" style="margin-left:0.25rem;"><?= $pendientes ?> pendiente<?= $pendientes>1?'s':'' ?></span>
-          <?php endif; ?>
-        </a>
-      </div>
-    </div>
-
-    <div class="grid-2">
-      <!-- Últimos registros -->
-      <div class="card">
-        <h3 class="mb-3">Últimos registros</h3>
-        <?php if (empty($ultimos_usuarios)): ?>
-          <p style="color:var(--text-muted); margin:0;">Aún no hay estudiantes registrados.</p>
-        <?php else: ?>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Nombre</th><th>Correo</th><th>Fecha</th></tr></thead>
-            <tbody>
-            <?php foreach ($ultimos_usuarios as $u): ?>
-            <tr>
-              <td><?= sanitizar($u['nombre']) ?></td>
-              <td style="font-size:0.82rem; color:var(--text-muted);"><?= sanitizar($u['email']) ?></td>
-              <td style="font-size:0.8rem;"><?= date('d/m/Y', strtotime($u['created_at'])) ?></td>
-            </tr>
-            <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
-        <a href="usuarios.php" class="btn btn-ghost btn-sm btn-hover-azul btn-lift mt-2">Ver todos →</a>
+        <?php if ($c['descripcion']): ?>
+          <p><?= sanitizar(mb_strimwidth($c['descripcion'], 0, 120, '…')) ?></p>
         <?php endif; ?>
       </div>
+      <?php endforeach; ?>
+    </div>
+    <div style="text-align:center; margin-top:2.5rem;">
+      <a href="login.php?modo=registro" class="btn btn-primary" style="font-size:1rem; padding:0.75rem 2rem;">Registrarme para estudiar</a>
+    </div>
+  </section>
+  <?php endif; ?>
 
-      <!-- Cursos recientes -->
-      <div class="card">
-        <h3 class="mb-3">Cursos recientes</h3>
-        <?php if (empty($ultimos_cursos)): ?>
-          <p style="color:var(--text-muted); margin:0;">Aún no hay cursos creados.</p>
-        <?php else: ?>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Título</th><th>Estado</th></tr></thead>
-            <tbody>
-            <?php foreach ($ultimos_cursos as $c): ?>
-            <tr>
-              <td><?= sanitizar($c['titulo']) ?></td>
-              <td>
-                <span class="badge <?= $c['publicado'] ? 'badge-success' : 'badge-gray' ?>">
-                  <?= $c['publicado'] ? 'Publicado' : 'Borrador' ?>
-                </span>
-              </td>
-            </tr>
-            <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
-        <a href="cursos.php" class="btn btn-ghost btn-sm btn-hover-azul btn-lift mt-2">Gestionar →</a>
-        <?php endif; ?>
+  <!-- Misión -->
+  <section class="cta-section" id="acerca">
+    <div style="max-width:680px; margin:0 auto;">
+      <span class="section-label" style="display:block; text-align:center;">Nuestra misión</span>
+      <h2 style="text-align:center; margin-bottom:1rem;">Formación bíblica sin barreras</h2>
+      <p style="text-align:center; color:var(--text-soft); font-size:1.05rem; line-height:1.7; margin-bottom:2rem;">
+        Llevamos educación bíblica gratuita y de calidad a comunidades hispanohablantes alrededor del mundo,
+        siguiendo fielmente la Biblia Reina-Valera 1865.
+      </p>
+      <div class="verse-block">
+        "Toda la Escritura es inspirada divinamente, y útil para enseñar..."
+        <span class="verse-ref">2 Timoteo 3:16</span>
       </div>
     </div>
-  </main>
-</div>
+  </section>
+</main>
 
 <footer>
   <div class="footer-brand">Instituto Bíblico Bautista</div>
-  <p style="margin:0;">RV 1865 — Formación bíblica en línea</p>
+  <p style="margin:0;">&copy; <?= date('Y') ?> RV 1865 — Formación bíblica en línea</p>
 </footer>
+
 </body>
 </html>
