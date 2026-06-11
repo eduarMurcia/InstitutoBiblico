@@ -1,6 +1,6 @@
 <?php
-require_once 'includes/auth.php';
-require_once 'config/db.php';
+require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/config/db.php';
 
 if (esta_logueado()) {
     redirigir(es_admin() ? 'admin/index.php' : 'dashboard.php');
