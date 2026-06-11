@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/config/db.php';
+require_once __DIR__ . '/includes/iconos.php';
 
 if (esta_logueado()) {
     redirigir(es_admin() ? 'admin/index.php' : 'dashboard.php');
@@ -22,20 +23,24 @@ $conn->close();
   <style>
     body { display:flex; flex-direction:column; min-height:100vh; }
     main { flex:1; }
+    .feature-icon .ico { color: var(--azul-deep); vertical-align: 0; }
     .curso-landing-card {
-      background: rgba(0,20,64,0.4);
-      border: 1px solid rgba(209,147,9,0.2);
+      background: var(--azul-pale);
+      border: 1px solid var(--azul);
       border-radius: var(--radius-lg);
       padding: 1.5rem;
-      transition: border-color 0.2s, background 0.2s;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
     }
     .curso-landing-card:hover {
-      border-color: var(--gold);
-      background: rgba(0,20,64,0.6);
+      background: var(--navy);
+      border-color: var(--azul-deep);
     }
-    .curso-landing-card h4 { color: #f5f0e8; margin-bottom: 0.35rem; }
-    .curso-landing-card .instructor { font-size: 0.8rem; color: var(--gold); margin-bottom: 0.5rem; }
-    .curso-landing-card p { color: rgba(245,240,232,0.65); font-size: 0.88rem; margin: 0; line-height: 1.5; }
+    .curso-landing-card h4 { color: var(--navy); margin-bottom: 0.35rem; transition: color 0.2s; }
+    .curso-landing-card:hover h4 { color: #f5f0e8; }
+    .curso-landing-card .instructor { font-size: 0.8rem; color: var(--azul-deep); margin-bottom: 0.5rem; transition: color 0.2s; }
+    .curso-landing-card:hover .instructor { color: var(--azul); }
+    .curso-landing-card p { color: var(--text-soft); font-size: 0.88rem; margin: 0; line-height: 1.5; transition: color 0.2s; }
+    .curso-landing-card:hover p { color: rgba(245,240,232,0.65); }
   </style>
 </head>
 <body>
@@ -79,17 +84,17 @@ $conn->close();
     <div class="features-grid" style="background:transparent;">
       <?php
       $features = [
-        ['🎧', 'Clases en audio', 'Lecciones grabadas por pastores, disponibles sin conexión.'],
-        ['📚', 'Módulos progresivos', 'Contenido organizado paso a paso para un aprendizaje sólido.'],
-        ['📝', 'Exámenes de comprensión', 'Evalúa tu entendimiento al final de cada módulo.'],
-        ['🏅', 'Certificados', 'Recibe un certificado al completar cada curso.'],
-        ['💬', 'Foros de discusión', 'Comenta y dialoga sobre cada lección con tu pastor.'],
-        ['📊', 'Seguimiento de progreso', 'Visualiza tu avance en todos los cursos.'],
+        ['lecciones',   'Clases en audio',          'Lecciones grabadas por pastores, disponibles sin conexión.'],
+        ['cursos',      'Módulos progresivos',       'Contenido organizado paso a paso para un aprendizaje sólido.'],
+        ['examen',      'Exámenes de comprensión',   'Evalúa tu entendimiento al final de cada módulo.'],
+        ['completadas', 'Certificados',              'Recibe un certificado al completar cada curso.'],
+        ['comentarios', 'Foros de discusión',        'Comenta y dialoga sobre cada lección con tu pastor.'],
+        ['progreso',    'Seguimiento de progreso',   'Visualiza tu avance en todos los cursos.'],
       ];
       foreach ($features as [$icon, $title, $desc]):
       ?>
       <div class="feature-card">
-        <span class="feature-icon"><?= $icon ?></span>
+        <span class="feature-icon"><?= icono($icon, 'ico') ?></span>
         <h3 style="color:#f5f0e8; margin-bottom:0.5rem;"><?= $title ?></h3>
         <p style="color:rgba(245,240,232,0.6); margin:0; font-size:0.9rem;"><?= $desc ?></p>
       </div>
