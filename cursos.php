@@ -139,6 +139,13 @@ $conn->close();
     .catalog-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.5rem; transition:all 0.2s; box-shadow:var(--shadow); }
     .catalog-card:hover { border-color:var(--border-gold); box-shadow:var(--shadow-lg); }
     .pdf-viewer-wrap { background:var(--bg-card); border:1px solid rgba(10,138,163,0.3); border-radius:var(--radius-lg); padding:1.25rem; margin-bottom:1.5rem; box-shadow:var(--shadow); }
+    .pdf-mobile-card { display:none; }
+    .pdf-desktop-iframe { display:block; }
+    @media (max-width: 640px) {
+      .pdf-mobile-card   { display:flex; align-items:center; gap:1rem; background:var(--azul-pale); border:1px solid rgba(10,138,163,0.25); border-radius:var(--radius); padding:1rem 1.25rem; margin-top:0.75rem; }
+      .pdf-desktop-iframe { display:none; }
+    }
+    .leccion-pdf-dot { width:6px; height:6px; border-radius:50%; background:var(--teal); flex-shrink:0; margin-left:auto; opacity:0.75; }
   </style>
 </head>
 <body>
@@ -160,6 +167,9 @@ $conn->close();
          class="leccion-item <?= $leccion_id === $lec['id'] ? 'active' : '' ?>">
         <span class="check <?= $lec['completado'] ? 'done' : '' ?>"><?= $lec['completado'] ? '✓' : '' ?></span>
         <span><?= sanitizar($lec['titulo']) ?></span>
+        <?php if (!empty($lec['archivo_pdf'])): ?>
+        <span class="leccion-pdf-dot" title="Tiene material PDF"></span>
+        <?php endif; ?>
       </a>
       <?php endforeach; ?>
       <?php if ($mod['examen']): ?>
@@ -545,17 +555,30 @@ $conn->close();
       <?php if (!empty($leccion_activa['archivo_pdf'])): ?>
       <div class="pdf-viewer-wrap mb-3">
         <div class="d-flex justify-between align-center mb-2">
-          <h4 style="margin:0; color:var(--teal);"><?= icono('documento','ico') ?> Material de la lección</h4>
+          <h4 style="margin:0; color:var(--teal); display:flex; align-items:center; gap:0.5rem;">
+            <?= icono('documento','ico') ?> Material de la lección
+          </h4>
           <a href="api/pdf.php?id=<?= $leccion_activa['id'] ?>"
              class="btn btn-outline btn-sm"
              style="border-color:var(--teal); color:var(--teal);" download>
-            ↓ Descargar PDF
+            <?= icono('descargar','ico') ?> Descargar PDF
           </a>
         </div>
-        <iframe src="api/pdf.php?id=<?= $leccion_activa['id'] ?>&ver=1"
-                style="width:100%; height:520px; border:1px solid var(--border); border-radius:var(--radius);"
+
+        <!-- Móvil: solo descarga (los iframes PDF no funcionan en iOS/Android) -->
+        <div class="pdf-mobile-card">
+          <?= icono('documento','ico-md') ?>
+          <div>
+            <p style="margin:0; font-size:0.9rem; color:var(--azul-deep); font-weight:500;">Material de estudio disponible</p>
+            <p style="margin:0.2rem 0 0; font-size:0.8rem; color:var(--text-muted);">Descarga el PDF para leerlo en tu dispositivo</p>
+          </div>
+        </div>
+
+        <!-- Desktop: visor embebido -->
+        <iframe class="pdf-desktop-iframe"
+                src="api/pdf.php?id=<?= $leccion_activa['id'] ?>&ver=1"
+                style="width:100%; height:520px; border:1px solid var(--border); border-radius:var(--radius); margin-top:0.75rem;"
                 title="Material de la lección">
-          <a href="api/pdf.php?id=<?= $leccion_activa['id'] ?>">Descargar PDF</a>
         </iframe>
       </div>
       <?php endif; ?>
