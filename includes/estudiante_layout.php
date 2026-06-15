@@ -37,7 +37,7 @@ function estudiante_navbar(string $activa = '', array $extra = []): void {
 function estudiante_sidebar(string $activa = ''): void {
     $nombre = sanitizar($_SESSION['nombre'] ?? '');
     $inicial = strtoupper(mb_substr($nombre, 0, 1));
-    $rol_txt = es_admin() ? '⚙ Administrador' : '✦ Estudiante';
+    $rol_txt = es_admin() ? icono('config','ico').' Administrador' : '✦ Estudiante';
     ?>
     <aside class="sidebar">
       <div style="padding:0 1.25rem 1.25rem;border-bottom:1px solid var(--border);margin-bottom:1.25rem;text-align:center;">

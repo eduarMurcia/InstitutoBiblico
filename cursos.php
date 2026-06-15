@@ -164,7 +164,7 @@ $conn->close();
       <?php endforeach; ?>
       <?php if ($mod['examen']): ?>
       <a href="examen.php?id=<?= $mod['examen']['id'] ?>" class="leccion-item" style="color:var(--gold);">
-        <span class="check" style="border-color:var(--gold); color:var(--gold);">✎</span>
+        <span class="check" style="border-color:var(--gold); color:var(--gold);"><?= icono('editar','ico') ?></span>
         <span>Examen del módulo</span>
       </a>
       <?php endif; ?>
@@ -545,7 +545,7 @@ $conn->close();
       <?php if (!empty($leccion_activa['archivo_pdf'])): ?>
       <div class="pdf-viewer-wrap mb-3">
         <div class="d-flex justify-between align-center mb-2">
-          <h4 style="margin:0; color:var(--teal);">📄 Material de la lección</h4>
+          <h4 style="margin:0; color:var(--teal);"><?= icono('documento','ico') ?> Material de la lección</h4>
           <a href="api/pdf.php?id=<?= $leccion_activa['id'] ?>"
              class="btn btn-outline btn-sm"
              style="border-color:var(--teal); color:var(--teal);" download>
@@ -580,7 +580,7 @@ $conn->close();
 
       <!-- Foro -->
       <div class="card">
-        <h3 class="mb-3">💬 Foro de la lección</h3>
+        <h3 class="mb-3"><?= icono('comentarios','ico') ?> Foro de la lección</h3>
         <form method="POST" style="margin-bottom:1.5rem;">
           <input type="hidden" name="leccion_id" value="<?= $leccion_id ?>">
           <div class="form-group">

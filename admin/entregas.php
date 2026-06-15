@@ -245,20 +245,20 @@ $conn->close();
     <div id="tab-pendientes" class="tab-panel active">
       <?php if (!empty($archivos_generales)): ?>
       <h4 style="font-size:0.88rem; font-family:var(--font-ui); color:var(--gold); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1rem;">
-        📎 Archivos generales del examen
+        <?= icono('adjunto','ico') ?> Archivos generales del examen
       </h4>
       <?php foreach ($archivos_generales as $ag): ?>
       <div class="entrega-card pendiente" style="margin-bottom:1rem;">
         <div class="entrega-meta">
-          <span>👤 <strong><?= sanitizar($ag['estudiante']) ?></strong> — <?= sanitizar($ag['email']) ?></span>
-          <span>✎ <?= sanitizar($ag['examen']) ?></span>
-          <span>📖 <?= sanitizar($ag['curso']) ?></span>
-          <span>🕐 <?= date('d/m/Y H:i', strtotime($ag['created_at'])) ?></span>
-          <span class="badge badge-gold" style="font-size:0.7rem;">📎 Archivo general</span>
+          <span><?= icono('perfil','ico') ?> <strong><?= sanitizar($ag['estudiante']) ?></strong> — <?= sanitizar($ag['email']) ?></span>
+          <span><?= icono('editar','ico') ?> <?= sanitizar($ag['examen']) ?></span>
+          <span><?= icono('libro','ico') ?> <?= sanitizar($ag['curso']) ?></span>
+          <span><?= icono('reloj','ico') ?> <?= date('d/m/Y H:i', strtotime($ag['created_at'])) ?></span>
+          <span class="badge badge-gold" style="font-size:0.7rem;"><?= icono('adjunto','ico') ?> Archivo general</span>
         </div>
         <a href="../uploads/respuestas/<?= htmlspecialchars($ag['archivo_general']) ?>"
            target="_blank" class="btn btn-outline btn-sm">
-          📎 Descargar archivo del estudiante
+          <?= icono('adjunto','ico') ?> Descargar archivo del estudiante
         </a>
       </div>
       <?php endforeach; ?>
@@ -272,12 +272,12 @@ $conn->close();
       <?php else: foreach ($pendientes as $e): ?>
       <div class="entrega-card pendiente">
         <div class="entrega-meta">
-          <span>📖 <strong><?= sanitizar($e['curso']) ?></strong></span>
-          <span>✎ <?= sanitizar($e['examen']) ?></span>
-          <span>👤 <strong><?= sanitizar($e['estudiante']) ?></strong> — <?= sanitizar($e['email']) ?></span>
-          <span>🕐 <?= date('d/m/Y H:i', strtotime($e['created_at'])) ?></span>
+          <span><?= icono('libro','ico') ?> <strong><?= sanitizar($e['curso']) ?></strong></span>
+          <span><?= icono('editar','ico') ?> <?= sanitizar($e['examen']) ?></span>
+          <span><?= icono('perfil','ico') ?> <strong><?= sanitizar($e['estudiante']) ?></strong> — <?= sanitizar($e['email']) ?></span>
+          <span><?= icono('reloj','ico') ?> <?= date('d/m/Y H:i', strtotime($e['created_at'])) ?></span>
           <span class="badge <?= $e['tipo']==='abierta' ? 'badge-gold' : 'badge-teal' ?>">
-            <?= $e['tipo']==='abierta' ? '✏ Respuesta abierta' : '📎 Archivo adjunto' ?>
+            <?= $e['tipo']==='abierta' ? icono('editar','ico').' Respuesta abierta' : icono('adjunto','ico').' Archivo adjunto' ?>
           </span>
         </div>
 
@@ -290,7 +290,7 @@ $conn->close();
         <?php elseif ($e['tipo'] === 'archivo'): ?>
           <?php if ($e['archivo_respuesta']): ?>
             <a href="../api/archivo_respuesta.php?id=<?= $e['id'] ?>"
-               class="btn btn-outline btn-sm mb-3">📎 Descargar archivo del estudiante</a>
+               class="btn btn-outline btn-sm mb-3"><?= icono('adjunto','ico') ?> Descargar archivo del estudiante</a>
           <?php else: ?>
             <div class="alert alert-info mb-2" style="font-size:0.85rem;">El estudiante aún no ha subido el archivo.</div>
           <?php endif; ?>
@@ -330,9 +330,9 @@ $conn->close();
       <?php else: foreach ($revisadas as $e): ?>
       <div class="entrega-card revisada">
         <div class="entrega-meta">
-          <span>👤 <strong><?= sanitizar($e['estudiante']) ?></strong></span>
-          <span>✎ <?= sanitizar($e['examen']) ?></span>
-          <span>🕐 <?= date('d/m/Y', strtotime($e['created_at'])) ?></span>
+          <span><?= icono('perfil','ico') ?> <strong><?= sanitizar($e['estudiante']) ?></strong></span>
+          <span><?= icono('editar','ico') ?> <?= sanitizar($e['examen']) ?></span>
+          <span><?= icono('reloj','ico') ?> <?= date('d/m/Y', strtotime($e['created_at'])) ?></span>
         </div>
         <p style="color:var(--text-soft); font-size:0.88rem; font-style:italic; margin-bottom:0.75rem;">
           <?= sanitizar($e['pregunta']) ?>
@@ -342,7 +342,7 @@ $conn->close();
             <?= sanitizar($e['respuesta_texto']) ?>
           </div>
         <?php elseif ($e['archivo_respuesta']): ?>
-          <a href="../api/archivo_respuesta.php?id=<?= $e['id'] ?>" class="btn btn-ghost btn-sm mb-2">📎 Ver archivo</a>
+          <a href="../api/archivo_respuesta.php?id=<?= $e['id'] ?>" class="btn btn-ghost btn-sm mb-2"><?= icono('adjunto','ico') ?> Ver archivo</a>
         <?php endif; ?>
 
         <div class="d-flex align-center gap-2" style="margin-top:0.5rem;">

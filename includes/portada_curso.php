@@ -60,7 +60,7 @@ function portada_curso(array $c, array $opts = []): void {
       </div>
     <?php endif; ?>
     <?php if ($publico && !$enlace): ?>
-      <div class="portada-lock">🔒 Requiere cuenta</div>
+      <div class="portada-lock"><?= function_exists('icono') ? icono('candado','ico') : '' ?> Requiere cuenta</div>
     <?php endif; ?>
   </div>
 
@@ -78,7 +78,7 @@ function portada_curso(array $c, array $opts = []): void {
     <?php endif; ?>
     <?php if ($pct !== null): ?>
       <div class="portada-progress-wrap">
-        <div class="portada-progress-bar" style="width:<?= $pct ?>%;"></div>
+        <div class="portada-progress-bar" style="--p:<?= round($pct / 100, 4) ?>;"></div>
       </div>
     <?php endif; ?>
     <?php if ($enlace): ?>

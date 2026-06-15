@@ -138,7 +138,7 @@ $conn->close();
           </select>
         </div>
         <button type="submit" name="invitar" class="btn btn-primary">
-          ✉ Enviar invitación
+          <?= icono('correo','ico') ?> Enviar invitación
         </button>
       </form>
     </div>
@@ -176,7 +176,7 @@ $conn->close();
                 <?php elseif (!$inv['activa']): ?>
                   <span class="badge badge-gray">✕ Expirado</span>
                 <?php else: ?>
-                  <span class="badge badge-gold">⏳ Pendiente</span>
+                  <span class="badge badge-gold"><?= icono('pendiente','ico') ?> Pendiente</span>
                 <?php endif; ?>
               </td>
               <td>

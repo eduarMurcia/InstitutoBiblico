@@ -337,7 +337,7 @@ $iconos_disponibles = [
               <div class="form-group">
                 <label class="form-label">Imagen de portada (opcional)</label>
                 <div class="upload-area" onclick="document.getElementById('img-portada-input').click()" style="padding:0.85rem;">
-                  <p style="margin:0; font-size:0.82rem; color:var(--gray-mid);" id="img-portada-lbl">📷 Subir imagen (JPG, PNG, WebP — máx. 5MB)</p>
+                  <p style="margin:0; font-size:0.82rem; color:var(--gray-mid);" id="img-portada-lbl"><?= icono('camara','ico') ?> Subir imagen (JPG, PNG, WebP — máx. 5MB)</p>
                   <input type="file" id="img-portada-input" name="imagen_portada" accept=".jpg,.jpeg,.png,.webp"
                          onchange="previewPortada(this)">
                 </div>
@@ -404,11 +404,11 @@ $iconos_disponibles = [
             <td><?= $c['orden'] ?></td>
             <td>
               <div class="d-flex gap-1" style="flex-wrap:wrap;">
-                <a href="cursos.php?accion=modulos&curso_id=<?= $c['id'] ?>" class="btn btn-outline btn-sm">📖 Módulos</a>
-                <a href="examenes.php?curso_id=<?= $c['id'] ?>" class="btn btn-ghost btn-sm">✎ Exámenes</a>
+                <a href="cursos.php?accion=modulos&curso_id=<?= $c['id'] ?>" class="btn btn-outline btn-sm"><?= icono('libro','ico') ?> Módulos</a>
+                <a href="examenes.php?curso_id=<?= $c['id'] ?>" class="btn btn-ghost btn-sm"><?= icono('editar','ico') ?> Exámenes</a>
                 <button type="button" class="btn btn-ghost btn-sm"
                         onclick="abrirEditar(<?= $c['id'] ?>, <?= htmlspecialchars(json_encode($c['titulo'])) ?>, <?= htmlspecialchars(json_encode($c['descripcion'] ?? '')) ?>, <?= htmlspecialchars(json_encode($c['instructor'] ?? '')) ?>, <?= (int)$c['orden'] ?>, <?= (int)$c['publicado'] ?>, <?= htmlspecialchars(json_encode($c['color_portada'] ?? '#1a2744')) ?>, <?= htmlspecialchars(json_encode($c['icono_portada'] ?? '📖')) ?>)">
-                  ✎ Editar
+                  <?= icono('editar','ico') ?> Editar
                 </button>
                 <form method="POST" onsubmit="return confirm('¿Eliminar este curso?')">
                   <input type="hidden" name="curso_id_del" value="<?= $c['id'] ?>">
@@ -466,9 +466,9 @@ $iconos_disponibles = [
             <td><span class="badge badge-gold"><?= $m['num_lecciones'] ?></span></td>
             <td>
               <div class="d-flex gap-1">
-                <a href="cursos.php?accion=lecciones&modulo_id=<?= $m['id'] ?>&curso_id=<?= $cid ?>" class="btn btn-outline btn-sm">🎧 Lecciones</a>
+                <a href="cursos.php?accion=lecciones&modulo_id=<?= $m['id'] ?>&curso_id=<?= $cid ?>" class="btn btn-outline btn-sm"><?= icono('audio','ico') ?> Lecciones</a>
                 <button type="button" class="btn btn-ghost btn-sm btn-hover-azul"
-                        onclick="var f=document.getElementById('edit-mod-<?= $m['id'] ?>'); f.style.display = f.style.display==='none' ? 'table-row' : 'none';">✎ Editar</button>
+                        onclick="var f=document.getElementById('edit-mod-<?= $m['id'] ?>'); f.style.display = f.style.display==='none' ? 'table-row' : 'none';"><?= icono('editar','ico') ?> Editar</button>
                 <form method="POST" onsubmit="return confirm('¿Eliminar módulo?')">
                   <input type="hidden" name="modulo_id_del" value="<?= $m['id'] ?>">
                   <button type="submit" name="eliminar_modulo" class="btn btn-danger btn-sm">✕</button>
@@ -546,7 +546,7 @@ $iconos_disponibles = [
           <div class="form-group">
             <label class="form-label">Audio (MP3, M4A, WAV — máx 150MB)</label>
             <div class="upload-area" onclick="document.getElementById('inp-audio').click()">
-              <span style="font-size:1.5rem;">🎧</span>
+              <?= icono('audio','ico-md') ?>
               <p style="margin:0.4rem 0 0;color:var(--gray-mid);font-size:0.85rem;" id="lbl-audio">Seleccionar audio</p>
               <input type="file" id="inp-audio" name="audio" accept="audio/*"
                      onchange="document.getElementById('lbl-audio').textContent=this.files[0]?.name||'Seleccionar audio'">
@@ -556,7 +556,7 @@ $iconos_disponibles = [
           <div class="form-group">
             <label class="form-label">Material PDF (opcional — máx 50MB)</label>
             <div class="upload-area" onclick="document.getElementById('inp-pdf').click()">
-              <span style="font-size:1.5rem;">📄</span>
+              <?= icono('documento','ico-md') ?>
               <p style="margin:0.4rem 0 0;color:var(--gray-mid);font-size:0.85rem;" id="lbl-pdf">Seleccionar PDF</p>
               <input type="file" id="inp-pdf" name="pdf" accept="application/pdf"
                      onchange="document.getElementById('lbl-pdf').textContent=this.files[0]?.name||'Seleccionar PDF'">
@@ -578,10 +578,10 @@ $iconos_disponibles = [
           <?php else: foreach ($lecciones as $l): ?>
           <tr>
             <td><strong style="color:var(--navy);"><?= sanitizar($l['titulo']) ?></strong></td>
-            <td><?= $l['archivo_audio'] ? '<span class="badge badge-success">🎧 Cargado</span>' : '<span class="badge badge-gray">—</span>' ?></td>
+            <td><?= $l['archivo_audio'] ? '<span class="badge badge-success">'.icono('audio','ico').' Cargado</span>' : '<span class="badge badge-gray">—</span>' ?></td>
             <td>
               <?php if ($l['archivo_pdf']): ?>
-                <span class="pdf-badge">📄 PDF</span>
+                <span class="pdf-badge"><?= icono('documento','ico') ?> PDF</span>
                 <form method="POST" enctype="multipart/form-data" style="display:inline; margin-left:0.4rem;">
                   <input type="hidden" name="leccion_id_upd" value="<?= $l['id'] ?>">
                   <input type="hidden" name="quitar_pdf" value="1">
@@ -650,7 +650,7 @@ $iconos_disponibles = [
       <div class="form-group">
         <label class="form-label">Imagen de portada (dejar vacío para no cambiar)</label>
         <div class="upload-area" onclick="document.getElementById('edit-img-input').click()">
-          <p style="margin:0;font-size:0.82rem;color:var(--gray-mid);" id="edit-img-lbl">📷 Subir nueva imagen (opcional)</p>
+          <p style="margin:0;font-size:0.82rem;color:var(--gray-mid);" id="edit-img-lbl"><?= icono('camara','ico') ?> Subir nueva imagen (opcional)</p>
           <input type="file" id="edit-img-input" name="imagen_portada" accept=".jpg,.jpeg,.png,.webp"
                  onchange="document.getElementById('edit-img-lbl').textContent='✓ '+this.files[0].name">
         </div>
@@ -701,7 +701,7 @@ function abrirEditar(id, titulo, desc, instructor, orden, publicado, color, icon
   document.querySelectorAll('.icono-btn-edit').forEach(b => {
     b.style.borderColor = b.dataset.val === icono ? '#d19309' : 'rgba(209,147,9,0.3)';
   });
-  document.getElementById('edit-img-lbl').textContent = '📷 Subir nueva imagen (opcional)';
+  document.getElementById('edit-img-lbl').textContent = 'Subir nueva imagen (opcional)';
   const m = document.getElementById('modal-editar');
   m.style.display = 'flex';
   document.body.style.overflow = 'hidden';

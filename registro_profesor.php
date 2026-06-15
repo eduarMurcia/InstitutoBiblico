@@ -1,5 +1,6 @@
 <?php
 require_once 'includes/auth.php';
+require_once 'includes/iconos.php';
 require_once 'config/db.php';
 
 if (esta_logueado()) redirigir('dashboard.php');
@@ -153,7 +154,7 @@ if (isset($conn) && $conn) $conn->close();
 
         <!-- Info de acceso -->
         <div style="background:rgba(209,147,9,0.08);border:1px solid var(--border-gold);border-radius:var(--radius);padding:.85rem 1rem;margin-bottom:1.25rem;font-size:.85rem;color:#7a5500;">
-          🔑 Esta cuenta tendrá acceso completo al panel de administración.
+          <?= icono('clave','ico') ?> Esta cuenta tendrá acceso completo al panel de administración.
         </div>
 
         <button type="submit" name="registrar" class="btn btn-primary btn-full">

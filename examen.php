@@ -213,7 +213,7 @@ $mostrar_formulario = !$resultado
     <?php if ($ultimo && !$resultado): ?>
       <span>Último resultado:
         <strong style="color:<?= $ultimo['pendiente_revision'] ? '#8a6000' : ($ultimo['aprobado'] ? '#1e7e45' : '#922b21') ?>">
-          <?php if ($ultimo['pendiente_revision']): ?>⏳ Pendiente de revisión
+          <?php if ($ultimo['pendiente_revision']): ?><?= icono('pendiente','ico') ?> Pendiente de revisión
           <?php elseif ($ultimo['aprobado']): ?>✓ Aprobado (<?= $ultimo['puntaje'] ?>%)
           <?php else: ?>✗ No aprobado (<?= $ultimo['puntaje'] ?>%)
           <?php endif; ?>
@@ -225,7 +225,7 @@ $mostrar_formulario = !$resultado
        style="margin-left:auto;"
        class="btn btn-outline btn-sm"
        title="Descargar el examen en PDF para responder en papel y luego subir la foto">
-      📄 Responder en papel
+      <?= icono('documento','ico') ?> Responder en papel
     </a>
   </div>
 
@@ -233,7 +233,7 @@ $mostrar_formulario = !$resultado
   <?php if ($resultado): ?>
   <div class="result-box">
     <?php if ($resultado['pendiente']): ?>
-      <div style="font-size:3rem; margin-bottom:0.75rem;">⏳</div>
+      <div style="margin-bottom:0.75rem;"><?= icono('pendiente','ico-xl') ?></div>
       <h3 style="color:var(--navy); margin-bottom:0.5rem;">Examen enviado</h3>
       <p style="max-width:460px; margin:0 auto 1rem;">
         Las preguntas abiertas y de archivo serán revisadas por el pastor.
@@ -268,7 +268,7 @@ $mostrar_formulario = !$resultado
   <!-- Límite de intentos alcanzado -->
   <?php elseif ($limite_alcanzado && !$ya_aprobado): ?>
   <div class="result-box">
-    <div style="font-size:2.5rem; margin-bottom:0.75rem;">🔒</div>
+    <div style="margin-bottom:0.75rem;"><?= icono('candado','ico-xl') ?></div>
     <h3 style="color:var(--navy); margin-bottom:0.5rem;">Límite de intentos alcanzado</h3>
     <p>Has utilizado los <?= $max_intentos ?> intento(s) disponibles para este examen.</p>
     <a href="cursos.php?id=<?= $examen['curso_id'] ?>" class="btn btn-outline btn-sm mt-2">← Volver al curso</a>
@@ -277,7 +277,7 @@ $mostrar_formulario = !$resultado
   <!-- Ya aprobado -->
   <?php elseif ($ya_aprobado && !$resultado): ?>
   <div class="result-box">
-    <div style="font-size:2.5rem; margin-bottom:0.75rem;">🏆</div>
+    <div style="margin-bottom:0.75rem;"><?= icono('trofeo','ico-xl') ?></div>
     <span class="badge badge-success" style="font-size:0.95rem; padding:0.5rem 1.5rem;">✓ Examen aprobado</span>
     <p style="margin-top:1rem; color:var(--text-soft);">Ya aprobaste este examen con <?= $ultimo['puntaje'] ?>%.</p>
     <a href="perfil.php" class="btn btn-primary mt-2">Ver mis certificados</a>
@@ -342,7 +342,7 @@ $mostrar_formulario = !$resultado
           </div>
         <?php endif; ?>
         <div class="upload-zone" onclick="document.getElementById('arch_<?= $p['id'] ?>').click()">
-          <span style="font-size:1.5rem;">📎</span>
+          <?= icono('adjunto','ico-md') ?>
           <p style="margin:0.4rem 0 0; color:var(--text-muted); font-size:0.88rem;" id="lbl_<?= $p['id'] ?>">
             <?= ($prev && $prev['archivo_respuesta']) ? 'Reemplazar archivo' : 'Seleccionar archivo (PDF, imagen, Word — máx. 30MB)' ?>
           </p>
@@ -356,14 +356,14 @@ $mostrar_formulario = !$resultado
     <!-- ── Entrega de archivo fija (aparece en todos los exámenes) ── -->
     <div class="preg-card" style="border-color:var(--border-gold);">
       <div class="preg-meta">
-        <span style="color:var(--gold); font-weight:700;">📎 Entrega de archivo <span style="font-weight:400; color:var(--text-muted);">— opcional</span></span>
+        <span style="color:var(--gold); font-weight:700;"><?= icono('adjunto','ico') ?> Entrega de archivo <span style="font-weight:400; color:var(--text-muted);">— opcional</span></span>
         <span class="badge badge-gold">Opcional</span>
       </div>
       <p class="preg-text" style="font-size:0.95rem; color:var(--text-muted);">
         ¿Prefiere responder en papel? Descargue el examen, resuélvalo a mano y suba la foto o el documento aquí.
       </p>
       <div class="upload-zone" onclick="document.getElementById('arch_general').click()">
-        <span style="font-size:1.5rem;">📎</span>
+        <?= icono('adjunto','ico-md') ?>
         <p style="margin:0.4rem 0 0; color:var(--text-muted); font-size:0.88rem;" id="lbl_general">
           Seleccionar archivo (foto, PDF o Word — máx. 30MB)
         </p>

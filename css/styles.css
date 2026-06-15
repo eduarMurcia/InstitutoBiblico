@@ -30,7 +30,7 @@
   /* Texto */
   --text:         #1a1228;
   --text-soft:    #4a4560;
-  --text-muted:   #8a8699;
+  --text-muted:   #6b6880;
 
   /* Bordes y sombras */
   --border:       rgba(0,10,35,0.1);
@@ -297,11 +297,11 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   font-family: var(--font-body);
   font-size: 0.95rem;
   margin-bottom: 1rem;
-  border-left: 3px solid;
+  border: 1px solid;
 }
 .alert-success { background: #e8f8f0; border-color: #27ae60; color: #1e7e45; }
 .alert-error   { background: #fdf0f0; border-color: #c0392b; color: #922b21; }
-.alert-info    { background: var(--gold-pale); border-color: var(--gold); color: #7a5500; }
+.alert-info    { background: var(--gold-pale); border-color: var(--border-gold); color: #7a5500; }
 
 /* ── Progreso ─────────────────────────────────────────── */
 .progress-wrap {
@@ -311,10 +311,13 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   overflow: hidden;
 }
 .progress-bar {
+  width: 100%;
   height: 100%;
   background: linear-gradient(90deg, var(--gold), var(--gold-light));
   border-radius: 100px;
-  transition: width 0.6s ease;
+  transform: scaleX(var(--p, 0));
+  transform-origin: left;
+  transition: transform 0.6s ease;
 }
 .progress-label {
   font-family: var(--font-ui);
@@ -380,7 +383,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .sidebar-link.active {
   background: var(--gold-pale);
   color: #7a5500;
-  border-left: 2px solid var(--gold);
   font-weight: var(--fw-medium);
 }
 .sidebar-link .icon { font-size: 1rem; width: 20px; text-align: center; }
@@ -531,8 +533,8 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   margin-bottom: 1.25rem;
   box-shadow: var(--shadow);
 }
-.entrega-card.pendiente { border-left: 3px solid var(--gold); }
-.entrega-card.revisada  { border-left: 3px solid #27ae60; opacity: 0.88; }
+.entrega-card.pendiente { border-top: 3px solid var(--gold); }
+.entrega-card.revisada  { border-top: 3px solid #27ae60; opacity: 0.88; }
 .entrega-meta {
   font-size: 0.8rem;
   color: var(--text-muted);
@@ -573,8 +575,8 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   margin-bottom: 1.1rem;
   box-shadow: var(--shadow);
 }
-.com-card.pendiente  { border-left: 3px solid var(--gold); }
-.com-card.respondido { border-left: 3px solid #27ae60; opacity: 0.88; }
+.com-card.pendiente  { border-top: 3px solid var(--gold); }
+.com-card.respondido { border-top: 3px solid #27ae60; opacity: 0.88; }
 .com-meta {
   font-size: 0.8rem;
   color: var(--text-muted);
@@ -767,7 +769,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .portada-instructor { font-size: 0.78rem; color: var(--gold); margin: 0 0 0.5rem; }
 .portada-desc { font-size: 0.84rem; color: var(--text-muted); margin: 0 0 0.75rem; line-height: 1.5; }
 .portada-progress-wrap { height: 4px; background: var(--border); border-radius: 999px; margin-bottom: 0.75rem; overflow: hidden; }
-.portada-progress-bar { height: 100%; background: var(--gold); border-radius: 999px; transition: width 0.4s; }
+.portada-progress-bar { height: 100%; width: 100%; background: var(--gold); border-radius: 999px; transform-origin: left center; transform: scaleX(var(--p, 0)); transition: transform 0.4s ease-out; }
 .portada-cta { font-family: var(--font-ui); font-size: 0.75rem; font-weight: 700; color: var(--gold); letter-spacing: 0.05em; }
 .portada-hero {
   border-radius: var(--radius-lg);
@@ -881,7 +883,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 .hero h1 { color: #f5f0e8; margin-bottom: 0.5rem; }
 .hero-subtitle { font-size: 1.2rem; color: rgba(245,240,232,0.7); max-width: 560px; margin: 0 auto 2.5rem; }
 .hero-verse {
-  font-family: var(--font-title); font-style: italic;
+  font-family: 'IM Fell English', Georgia, serif; font-style: italic;
   font-size: 1.05rem; color: var(--gold);
   margin-top: 2.5rem;
   border-top: 1px solid rgba(209,147,9,0.3);
@@ -909,6 +911,37 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   padding: 1.75rem; text-align: center;
 }
 .feature-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+.features-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem 3.5rem;
+  list-style: none;
+  padding: 0; margin: 0;
+}
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.feature-item-icon {
+  flex-shrink: 0;
+  width: 2.25rem; height: 2.25rem;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--navy);
+  margin-top: 0.1rem;
+}
+.feature-item-title {
+  color: var(--navy);
+  font-size: 1rem; font-weight: var(--fw-medium);
+  margin: 0 0 0.3rem;
+}
+.feature-item-desc {
+  color: var(--text-soft);
+  font-size: 0.875rem; margin: 0;
+  line-height: 1.55;
+}
+.ico-md { width: 1.5rem; height: 1.5rem; }
+.ico-xl { width: 2.5rem; height: 2.5rem; display: inline-block; vertical-align: middle; }
 .cta-section {
   background: linear-gradient(135deg, rgba(209,147,9,0.12), rgba(0,51,102,0.3));
   border-top: 1px solid var(--border);
@@ -916,7 +949,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   padding: 5rem 2rem; text-align: center;
 }
 .verse-block {
-  font-family: var(--font-title); font-style: italic;
+  font-family: 'IM Fell English', Georgia, serif; font-style: italic;
   font-size: 1.25rem; color: var(--gold);
   text-align: center; max-width: 680px;
   margin: 0 auto; padding: 2rem;
@@ -1029,7 +1062,7 @@ footer {
     font-size: 0.88rem;
     border-left: none;
   }
-  .sidebar-link.active { border-left: none; border-bottom: 2px solid var(--gold); }
+  .sidebar-link.active { border-bottom: 2px solid var(--gold); }
   /* Bloque de avatar en sidebar — compacto en tablet */
   .sidebar > div:first-child {
     width: 100%; padding: 0.75rem 1.25rem !important;
@@ -1135,6 +1168,9 @@ footer {
 
   /* Auth */
   h2 { font-size: 1.4rem; }
+
+  /* Features list — columna única en móvil */
+  .features-list { grid-template-columns: 1fr; gap: 1.5rem; }
 }
 
 /* Móvil pequeño */
@@ -1155,6 +1191,7 @@ footer {
 
   /* Botones full width en móvil pequeño */
   .welcome-bar .btn { width: 100%; text-align: center; justify-content: center; }
+  .btn { min-height: 44px; padding: 0.75rem 1.5rem; }
 
   /* Cert cards */
   .cert-card, .cert-ready { padding: 1rem; }
@@ -1195,10 +1232,10 @@ footer {
   color: var(--azul-deep); font-weight:700; margin-bottom:0.5rem;
 }
 .hero-welcome h1 {
-  font-size: clamp(1.6rem, 3.5vw, 2.5rem); font-weight:700;
+  font-size: clamp(1.6rem, 3.5vw, 2.5rem); font-weight:400;
   color: var(--navy); line-height:1.15; margin:0 0 0.85rem; letter-spacing:-0.01em;
 }
-.hero-welcome .hero-verse { font-size:0.95rem; color:var(--text-soft); line-height:1.6; max-width:470px; margin:0 0 1.5rem; }
+.hero-welcome .hero-verse { font-family:'IM Fell English',Georgia,serif; font-size:0.95rem; color:var(--text-soft); line-height:1.6; max-width:470px; margin:0 0 1.5rem; }
 .hero-verse cite { display:block; font-style:normal; font-weight:600; color:var(--azul-deep); font-size:0.82rem; margin-top:0.4rem; }
 .hero-actions { display:flex; gap:0.75rem; flex-wrap:wrap; }
 .hero-figure { position:relative; flex-shrink:0; width:230px; height:215px; }

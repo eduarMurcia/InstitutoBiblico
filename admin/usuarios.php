@@ -97,7 +97,7 @@ $conn->close();
             <td style="font-size:0.82rem;"><?= sanitizar($u['email']) ?></td>
             <td>
               <span class="badge <?= $u['rol']==='admin' ? 'badge-gold' : 'badge-teal' ?>">
-                <?= $u['rol'] === 'admin' ? '⚙ Admin' : '✦ Estudiante' ?>
+                <?= $u['rol'] === 'admin' ? icono('config','ico').' Admin' : '✦ Estudiante' ?>
               </span>
             </td>
             <td>

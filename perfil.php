@@ -271,7 +271,7 @@ $conn->close();
               <span class="badge <?= $pct>=100?'badge-success':'badge-gold' ?>"><?= $pct ?>%</span>
             </div>
             <div class="progress-wrap">
-              <div class="progress-bar" style="width:<?= $pct ?>%"></div>
+              <div class="progress-bar" style="--p:<?= round($pct/100,4) ?>"></div>
             </div>
           </div>
           <?php endforeach; endif; ?>
@@ -282,7 +282,7 @@ $conn->close();
     <!-- ── Certificados disponibles para descargar ── -->
     <?php if (!empty($cursos_listos)): ?>
     <div class="card mb-4" style="border-color:var(--gold);">
-      <h3 class="mb-1" style="color:var(--navy);">🎉 ¡Tienes certificados nuevos disponibles!</h3>
+      <h3 class="mb-1" style="color:var(--navy);"><?= icono('trofeo','ico') ?> ¡Tienes certificados nuevos disponibles!</h3>
       <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:1.25rem;">
         Completaste estos cursos. Descarga tu certificado oficial.
       </p>
@@ -295,7 +295,7 @@ $conn->close();
           </div>
           <a href="api/certificado.php?curso_id=<?= $cl['id'] ?>"
              class="btn btn-primary btn-sm" target="_blank">
-            ⬇ Descargar certificado
+            <?= icono('descargar','ico') ?> Descargar certificado
           </a>
         </div>
         <?php endforeach; ?>
@@ -304,7 +304,7 @@ $conn->close();
     <?php endif; ?>
 
     <!-- ── Certificados ya emitidos ── -->
-    <h3 class="mb-2">🏆 Mis certificados</h3>
+    <h3 class="mb-2"><?= icono('trofeo','ico') ?> Mis certificados</h3>
     <?php if (empty($certificados) && empty($cursos_listos)): ?>
       <div class="card text-center mb-4">
         <p style="margin:0; color:var(--text-muted);">
@@ -325,7 +325,7 @@ $conn->close();
         </p>
         <a href="api/certificado.php?curso_id=<?= $cert['curso_id'] ?>"
            class="btn btn-outline btn-sm" target="_blank">
-          ⬇ Descargar PDF
+          <?= icono('descargar','ico') ?> Descargar PDF
         </a>
       </div>
       <?php endforeach; ?>
@@ -336,9 +336,9 @@ $conn->close();
     <?php if (!empty($historico)): ?>
     <div class="card" style="margin-bottom:0;">
       <div class="d-flex justify-between align-center mb-3" style="flex-wrap:wrap; gap:1rem;">
-        <h3 style="margin:0;">📋 Historial académico</h3>
+        <h3 style="margin:0;"><?= icono('historial','ico') ?> Historial académico</h3>
         <a href="api/historial_pdf.php" target="_blank" class="btn btn-outline btn-sm btn-lift">
-          ⬇ Descargar constancia PDF
+          <?= icono('descargar','ico') ?> Descargar constancia PDF
         </a>
       </div>
 
@@ -407,7 +407,7 @@ $conn->close();
               </td>
               <td style="text-align:center;">
                 <?php if ((int)$e['pendientes'] > 0 && !$e['aprobado']): ?>
-                  <span class="badge badge-gold">⏳ Pendiente</span>
+                  <span class="badge badge-gold"><?= icono('pendiente','ico') ?> Pendiente</span>
                 <?php elseif ($e['aprobado']): ?>
                   <span class="badge badge-success">✓ Aprobado</span>
                 <?php else: ?>

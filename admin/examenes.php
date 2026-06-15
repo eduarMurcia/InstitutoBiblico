@@ -125,10 +125,10 @@ $conn->close();
 
 // Íconos y etiquetas por tipo
 $tipo_info = [
-    'multiple'       => ['icon'=>'☰', 'label'=>'Selección múltiple', 'badge'=>'badge-gold'],
-    'verdadero_falso'=> ['icon'=>'⇌', 'label'=>'Verdadero / Falso',  'badge'=>'badge-teal'],
-    'abierta'        => ['icon'=>'✏',  'label'=>'Pregunta abierta',   'badge'=>'badge-gray'],
-    'archivo'        => ['icon'=>'📎', 'label'=>'Entrega de archivo', 'badge'=>'badge-gray'],
+    'multiple'       => ['icon'=>icono('lista'),       'label'=>'Selección múltiple', 'badge'=>'badge-gold'],
+    'verdadero_falso'=> ['icon'=>icono('intercambio'), 'label'=>'Verdadero / Falso',  'badge'=>'badge-teal'],
+    'abierta'        => ['icon'=>icono('editar'),      'label'=>'Pregunta abierta',   'badge'=>'badge-gray'],
+    'archivo'        => ['icon'=>icono('adjunto'),     'label'=>'Entrega de archivo', 'badge'=>'badge-gray'],
 ];
 ?>
 <!DOCTYPE html>
@@ -189,9 +189,9 @@ $tipo_info = [
         <!-- Selector de tipo -->
         <p class="form-label" style="margin-bottom:0.5rem;">Tipo de pregunta</p>
         <div class="tipo-tabs">
-          <button type="button" class="tipo-tab active" onclick="setTipo('multiple')">☰ Selección múltiple</button>
-          <button type="button" class="tipo-tab" onclick="setTipo('verdadero_falso')">⇌ Verdadero / Falso</button>
-          <button type="button" class="tipo-tab" onclick="setTipo('abierta')">✏ Pregunta abierta</button>
+          <button type="button" class="tipo-tab active" onclick="setTipo('multiple')"><?= icono('lista','ico') ?> Selección múltiple</button>
+          <button type="button" class="tipo-tab" onclick="setTipo('verdadero_falso')"><?= icono('intercambio','ico') ?> Verdadero / Falso</button>
+          <button type="button" class="tipo-tab" onclick="setTipo('abierta')"><?= icono('editar','ico') ?> Pregunta abierta</button>
         </div>
 
         <div class="form-group">
@@ -295,15 +295,15 @@ $tipo_info = [
           <div class="op-chip <?= $p['respuesta_correcta']==='b'?'ok':'' ?>">Falso <?= $p['respuesta_correcta']==='b'?' ✓':'' ?></div>
         </div>
       <?php elseif ($p['tipo'] === 'abierta'): ?>
-        <p style="font-size:0.85rem;color:#a89f8c;margin:0;">✏ El estudiante escribe su respuesta — calificación manual</p>
+        <p style="font-size:0.85rem;color:#a89f8c;margin:0;"><?= icono('editar','ico') ?> El estudiante escribe su respuesta — calificación manual</p>
       <?php elseif ($p['tipo'] === 'archivo'): ?>
-        <p style="font-size:0.85rem;color:#a89f8c;margin:0;">📎 El estudiante sube un archivo — calificación manual</p>
+        <p style="font-size:0.85rem;color:#a89f8c;margin:0;"><?= icono('adjunto','ico') ?> El estudiante sube un archivo — calificación manual</p>
       <?php endif; ?>
 
       <div style="margin-top:0.85rem; display:flex; gap:0.5rem; flex-wrap:wrap; align-items:flex-start;">
         <button type="button" class="btn btn-ghost btn-sm"
                 onclick="this.closest('.pregunta-card').querySelector('.edit-form').style.display='block';this.style.display='none';">
-          ✎ Editar
+          <?= icono('editar','ico') ?> Editar
         </button>
         <form method="POST" onsubmit="return confirm('¿Eliminar pregunta?')" style="display:inline;">
           <input type="hidden" name="pregunta_id_del" value="<?= $p['id'] ?>">
@@ -420,8 +420,8 @@ $tipo_info = [
             <td><span class="badge badge-gold"><?= $ex['puntaje_minimo'] ?>%</span></td>
             <td>
               <div class="d-flex gap-1">
-                <a href="examenes.php?accion=preguntas&examen_id=<?= $ex['id'] ?>" class="btn btn-outline btn-sm">✎ Preguntas</a>
-                <a href="entregas.php?examen_id=<?= $ex['id'] ?>" class="btn btn-ghost btn-sm">📬 Entregas</a>
+                <a href="examenes.php?accion=preguntas&examen_id=<?= $ex['id'] ?>" class="btn btn-outline btn-sm"><?= icono('editar','ico') ?> Preguntas</a>
+                <a href="entregas.php?examen_id=<?= $ex['id'] ?>" class="btn btn-ghost btn-sm"><?= icono('entregas','ico') ?> Entregas</a>
                 <form method="POST" onsubmit="return confirm('¿Eliminar examen?')">
                   <input type="hidden" name="examen_id_del" value="<?= $ex['id'] ?>">
                   <button type="submit" name="eliminar_examen" class="btn btn-danger btn-sm">✕</button>

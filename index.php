@@ -23,7 +23,7 @@ $conn->close();
   <style>
     body { display:flex; flex-direction:column; min-height:100vh; }
     main { flex:1; }
-    .feature-icon .ico { color: var(--gold); vertical-align: 0; }
+    .feature-icon .ico { color: rgba(209,147,9,0.12); vertical-align: 0; }
     .curso-landing-card {
       background: var(--azul-pale);
       border: 1px solid var(--azul);
@@ -77,11 +77,8 @@ $conn->close();
 
   <!-- Características -->
   <section class="section" style="background:var(--bg);">
-    <div style="text-align:center; margin-bottom:3rem;">
-      <span class="section-label">Lo que ofrecemos</span>
-      <h2>Todo lo que necesitas para crecer en la fe</h2>
-    </div>
-    <div class="features-grid" style="background:transparent;">
+    <h2 style="margin-bottom:2.5rem;">Todo lo que necesitas para crecer en la fe</h2>
+    <ul class="features-list">
       <?php
       $features = [
         ['lecciones',   'Clases en audio',          'Lecciones grabadas por pastores, disponibles sin conexión.'],
@@ -93,20 +90,21 @@ $conn->close();
       ];
       foreach ($features as [$icon, $title, $desc]):
       ?>
-      <div class="feature-card">
-        <span class="feature-icon"><?= icono($icon, 'ico') ?></span>
-        <h3 style="color:#f5f0e8; margin-bottom:0.5rem;"><?= $title ?></h3>
-        <p style="color:rgba(245,240,232,0.6); margin:0; font-size:0.9rem;"><?= $desc ?></p>
-      </div>
+      <li class="feature-item">
+        <span class="feature-item-icon"><?= icono($icon, 'ico ico-md') ?></span>
+        <div>
+          <h3 class="feature-item-title"><?= $title ?></h3>
+          <p class="feature-item-desc"><?= $desc ?></p>
+        </div>
+      </li>
       <?php endforeach; ?>
-    </div>
+    </ul>
   </section>
 
   <!-- Cursos disponibles -->
   <?php if (!empty($cursos)): ?>
   <section class="section" id="cursos" style="background:var(--navy);">
     <div style="text-align:center; margin-bottom:3rem;">
-      <span class="section-label">Catálogo</span>
       <h2 style="color:#f5f0e8;">Cursos disponibles</h2>
     </div>
     <div class="grid-2" style="max-width:900px; margin:0 auto;">
@@ -131,7 +129,6 @@ $conn->close();
   <!-- Misión -->
   <section class="cta-section" id="acerca">
     <div style="max-width:680px; margin:0 auto;">
-      <span class="section-label" style="display:block; text-align:center;">Nuestra misión</span>
       <h2 style="text-align:center; margin-bottom:1rem;">Formación bíblica sin barreras</h2>
       <p style="text-align:center; color:var(--text-soft); font-size:1.05rem; line-height:1.7; margin-bottom:2rem;">
         Llevamos educación bíblica gratuita y de calidad a comunidades hispanohablantes alrededor del mundo,

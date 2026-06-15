@@ -65,11 +65,17 @@ class HistorialPDF extends FPDF {
     function Circle($x,$y,$r,$style='D') { $this->Ellipse($x,$y,$r,$r,$style); }
     function Header() {}
     function Footer() {
-        $this->SetY(-12);
-        [$r,$g,$b]=$this->hex('999999');
+        $this->SetY(-16);
+        [$r,$g,$b]=$this->hex('d19309');
+        $this->SetDrawColor($r,$g,$b);
+        $this->SetLineWidth(0.3);
+        $this->Line(20,$this->GetY(),$this->GetPageWidth()-20,$this->GetY());
+        $this->Ln(2);
+        [$r,$g,$b]=$this->hex('8a8699');
         $this->SetTextColor($r,$g,$b);
-        $this->SetFont('Times','I',8);
-        $this->Cell(0,10,u('Instituto Bíblico Bautista — Página ').$this->PageNo().' de {nb}',0,0,'C');
+        $this->SetFont('Times','I',7);
+        $this->Cell(0,4,u('Documento generado automáticamente — Instituto Bíblico Bautista | RV 1865   "Escudriñad las Escrituras" — Juan 5:39'),0,1,'C');
+        $this->Cell(0,4,u('Página ').$this->PageNo().' de {nb}',0,0,'C');
     }
 }
 
@@ -147,39 +153,6 @@ $pdf->SetXY($pdf->GetPageWidth()/2,$ybox+13);
 $pdf->Cell($W/2-4,0,u('Miembro desde: '.fecha_es(strtotime($u['created_at']))),0,0,'R');
 $pdf->SetY($pdf->GetY()+30);
 
-// ── Estadísticas resumen ──
-$pdf->Ln(2);
-$cw = ($W-6)/3;
-$stats = [
-    [u('Cursos completados'), $res_hist['cursos_completados']],
-    [u('Exámenes aprobados'), $aprobados.'/'.$total],
-    [u('Promedio general'),   $promedio.'%'],
-];
-$sx = 20;
-foreach ($stats as [$lbl,$val]) {
-    [$r,$g,$b]=$pdf->hex('fdf3d0');
-    $pdf->SetFillColor($r,$g,$b);
-    [$r,$g,$b]=$pdf->hex('d19309');
-    $pdf->SetDrawColor($r,$g,$b);
-    $pdf->SetLineWidth(0.3);
-    $pdf->Rect($sx,$pdf->GetY(),$cw,18,'FD');
-
-    [$r,$g,$b]=$pdf->hex('000a23');
-    $pdf->SetTextColor($r,$g,$b);
-    $pdf->SetFont('Times','B',14);
-    $pdf->SetXY($sx,$pdf->GetY()+2);
-    $pdf->Cell($cw,0,$val,0,0,'C');
-
-    [$r,$g,$b]=$pdf->hex('8a6000');
-    $pdf->SetTextColor($r,$g,$b);
-    $pdf->SetFont('Times','',7);
-    $pdf->SetXY($sx,$pdf->GetY()+10);
-    $pdf->Cell($cw,0,$lbl,0,0,'C');
-
-    $sx += $cw+3;
-}
-$pdf->Ln(22);
-
 // ── Histórico de notas por curso ──
 $pdf->Ln(4);
 [$r,$g,$b]=$pdf->hex('000a23');
@@ -196,17 +169,17 @@ $pdf->Rect(20,$pdf->GetY(),$W,8,'F');
 $pdf->SetTextColor($r,$g,$b);
 $pdf->SetFont('Times','B',8);
 $pdf->SetX(20);
-$pdf->Cell($W*0.40,8,u('Curso / Examen'),0,0,'L');
+$pdf->Cell($W*0.40,8,u('Curso'),0,0,'L');
 $pdf->Cell($W*0.16,8,u('Lecciones'),0,0,'C');
 $pdf->Cell($W*0.16,8,u('Exámenes'),0,0,'C');
 $pdf->Cell($W*0.13,8,'Nota',0,0,'C');
 $pdf->Cell($W*0.15,8,u('Estado'),0,1,'C');
 
+$odd = true;
 foreach ($historico as $h) {
-    if ($pdf->GetY() > 248) { $pdf->AddPage(); $pdf->Ln(5); }
+    if ($pdf->GetY() > 252) { $pdf->AddPage(); $pdf->Ln(5); }
 
-    // ── Fila de curso ──
-    [$r,$g,$b]=$pdf->hex('e4eff6');
+    [$r,$g,$b] = $odd ? $pdf->hex('ffffff') : $pdf->hex('faf7f0');
     $pdf->SetFillColor($r,$g,$b);
     $pdf->Rect(20,$pdf->GetY(),$W,8,'F');
 
@@ -221,72 +194,28 @@ foreach ($historico as $h) {
     $pdf->Cell($W*0.16,8,$h['presentados'].'/'.$h['total_examenes'],0,0,'C');
 
     if ($h['nota'] !== null) {
-        [$r,$g,$b] = $h['estado']==='Reprobado' ? $pdf->hex('c0392b') : $pdf->hex('000a23');
+        [$r,$g,$b] = $h['estado']==='Reprobado' ? $pdf->hex('c0392b') : $pdf->hex('d19309');
         $pdf->SetTextColor($r,$g,$b);
         $pdf->SetFont('Times','B',9.5);
         $pdf->Cell($W*0.13,8,$h['nota'].'%',0,0,'C');
     } else {
+        [$r,$g,$b]=$pdf->hex('8a8699');
+        $pdf->SetTextColor($r,$g,$b);
         $pdf->Cell($W*0.13,8,u('—'),0,0,'C');
     }
 
-    if ($h['estado']==='Completado')      { [$r,$g,$b]=$pdf->hex('1e7e45'); }
-    elseif ($h['estado']==='Reprobado')   { [$r,$g,$b]=$pdf->hex('c0392b'); }
-    else                                  { [$r,$g,$b]=$pdf->hex('5b86b4'); }
+    if ($h['estado']==='Completado')    { [$r,$g,$b]=$pdf->hex('1e7e45'); }
+    elseif ($h['estado']==='Reprobado') { [$r,$g,$b]=$pdf->hex('c0392b'); }
+    else                                { [$r,$g,$b]=$pdf->hex('5b86b4'); }
     $pdf->SetTextColor($r,$g,$b);
     $pdf->SetFont('Times','B',8);
     $pdf->Cell($W*0.15,8,u($h['estado']),0,1,'C');
 
-    // ── Sub-filas: exámenes presentados del curso ──
-    $odd = true;
-    foreach ($h['examenes'] as $e) {
-        if ((int)$e['intentos'] === 0) continue;
-        if ($pdf->GetY() > 252) { $pdf->AddPage(); $pdf->Ln(5); }
-
-        [$r,$g,$b] = $odd ? $pdf->hex('ffffff') : $pdf->hex('faf7f0');
-        $pdf->SetFillColor($r,$g,$b);
-        $pdf->Rect(20,$pdf->GetY(),$W,7,'F');
-
-        [$r,$g,$b]=$pdf->hex('4a4560');
-        $pdf->SetTextColor($r,$g,$b);
-        $pdf->SetFont('Times','',8);
-        $pdf->SetX(20);
-        $pdf->Cell($W*0.40,7,u('    · '.mb_strimwidth($e['examen'],0,38,'…')),0,0,'L');
-
-        [$r,$g,$b]=$pdf->hex('8a8699');
-        $pdf->SetTextColor($r,$g,$b);
-        $pdf->Cell($W*0.16,7,$e['ultima_fecha'] ? date('d/m/Y',strtotime($e['ultima_fecha'])) : '',0,0,'C');
-        $pdf->Cell($W*0.16,7,u($e['intentos'].' intento'.($e['intentos']>1?'s':'')),0,0,'C');
-
-        $pend = (int)$e['pendientes'] > 0 && !$e['aprobado'];
-        if ($pend) {
-            $pdf->Cell($W*0.13,7,u('—'),0,0,'C');
-            [$r,$g,$b]=$pdf->hex('8a6000');
-            $pdf->SetTextColor($r,$g,$b);
-            $pdf->Cell($W*0.15,7,u('Pendiente'),0,1,'C');
-        } elseif ($e['aprobado']) {
-            [$r,$g,$b]=$pdf->hex('5b86b4');
-            $pdf->SetTextColor($r,$g,$b);
-            $pdf->SetFont('Times','B',8.5);
-            $pdf->Cell($W*0.13,7,round($e['mejor'],1).'%',0,0,'C');
-            [$r,$g,$b]=$pdf->hex('1e7e45');
-            $pdf->SetTextColor($r,$g,$b);
-            $pdf->SetFont('Times','',8);
-            $pdf->Cell($W*0.15,7,u('Aprobado'),0,1,'C');
-        } else {
-            [$r,$g,$b]=$pdf->hex('c0392b');
-            $pdf->SetTextColor($r,$g,$b);
-            $pdf->SetFont('Times','B',8.5);
-            $pdf->Cell($W*0.13,7,$e['mejor'] !== null ? round($e['mejor'],1).'%' : u('—'),0,0,'C');
-            $pdf->SetFont('Times','',8);
-            $pdf->Cell($W*0.15,7,u('No aprobado'),0,1,'C');
-        }
-
-        [$r,$g,$b]=$pdf->hex('e8e2d4');
-        $pdf->SetDrawColor($r,$g,$b);
-        $pdf->SetLineWidth(0.1);
-        $pdf->Line(20,$pdf->GetY(),$pdf->GetPageWidth()-20,$pdf->GetY());
-        $odd = !$odd;
-    }
+    [$r,$g,$b]=$pdf->hex('e8e2d4');
+    $pdf->SetDrawColor($r,$g,$b);
+    $pdf->SetLineWidth(0.1);
+    $pdf->Line(20,$pdf->GetY(),$pdf->GetPageWidth()-20,$pdf->GetY());
+    $odd = !$odd;
 }
 
 // Nota aclaratoria
@@ -327,20 +256,6 @@ if (!empty($certs)) {
         $pdf->Cell($W*0.20,10,date('d/m/Y',strtotime($cert['fecha'])),0,1,'R');
     }
 }
-
-// ── Pie de autenticidad ──
-$pdf->Ln(10);
-[$r,$g,$b]=$pdf->hex('d19309');
-$pdf->SetDrawColor($r,$g,$b);
-$pdf->SetLineWidth(0.4);
-$pdf->Line(20,$pdf->GetY(),$pdf->GetPageWidth()-20,$pdf->GetY());
-$pdf->Ln(4);
-[$r,$g,$b]=$pdf->hex('8a8699');
-$pdf->SetTextColor($r,$g,$b);
-$pdf->SetFont('Times','I',8.5);
-$pdf->Cell($W,0,u('Documento generado automáticamente el '.fecha_es(time()).' — Instituto Bíblico Bautista | RV 1865'),0,1,'C');
-$pdf->SetFont('Times','I',8);
-$pdf->Cell($W,0,u('"Escudriñad las Escrituras" — Juan 5:39'),0,1,'C');
 
 $filename = 'Historial_'.preg_replace('/[^a-zA-Z0-9]/','_',$u['nombre_completo']).'.pdf';
 $pdf->Output('D',$filename);

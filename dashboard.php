@@ -97,18 +97,18 @@ $conn->close();
     <!-- Aviso exámenes pendientes -->
     <?php if ($pendientes_revision > 0): ?>
     <div class="notif-bar">
-      ⏳ Tienes <?= $pendientes_revision ?> examen<?= $pendientes_revision>1?'es':'' ?> pendiente<?= $pendientes_revision>1?'s':'' ?> de calificación por el pastor.
+      <?= icono('examen', 'ico') ?> Tienes <?= $pendientes_revision ?> examen<?= $pendientes_revision>1?'es':'' ?> pendiente<?= $pendientes_revision>1?'s':'' ?> de calificación por el pastor.
     </div>
     <?php endif; ?>
 
     <?php if (!empty($mis_notificaciones)): ?>
     <div style="margin-bottom:1.5rem;">
       <?php
-      $iconos = ['comentario_respondido'=>'💬', 'examen_calificado'=>'📋'];
+      $iconos = ['comentario_respondido' => icono('comentarios', 'ico'), 'examen_calificado' => icono('completadas', 'ico')];
       foreach ($mis_notificaciones as $notif):
       ?>
-      <div style="display:flex; align-items:flex-start; gap:0.85rem; padding:0.85rem 1.1rem; background:var(--bg-card); border:1px solid var(--border-gold); border-left:3px solid var(--gold); border-radius:var(--radius); margin-bottom:0.5rem; box-shadow:var(--shadow);">
-        <span style="font-size:1.2rem; flex-shrink:0; margin-top:2px;"><?= $iconos[$notif['tipo']] ?? '🔔' ?></span>
+      <div style="display:flex; align-items:flex-start; gap:0.85rem; padding:0.85rem 1.1rem; background:var(--bg-card); border:1px solid var(--border-gold); border-radius:var(--radius); margin-bottom:0.5rem; box-shadow:var(--shadow);">
+        <span style="flex-shrink:0; margin-top:2px; color:var(--gold);"><?= $iconos[$notif['tipo']] ?? icono('notificacion', 'ico') ?></span>
         <div style="flex:1; min-width:0;">
           <div style="font-weight:700; color:var(--navy); font-size:0.92rem;"><?= sanitizar($notif['titulo']) ?></div>
           <div style="font-size:0.85rem; color:var(--text-soft); margin-top:0.15rem; line-height:1.5;"><?= sanitizar(mb_strimwidth($notif['mensaje'], 0, 140, '…')) ?></div>
@@ -181,7 +181,7 @@ $conn->close();
         <span style="font-size:0.85rem; color:var(--text-muted);"><?= $total_c ?> de <?= $total_l ?> lecciones</span>
       </div>
       <div class="progress-wrap">
-        <div class="progress-bar" style="width:<?= $pct_total ?>%"></div>
+        <div class="progress-bar" style="--p:<?= round($pct_total/100,4) ?>"></div>
       </div>
     </div>
     <?php endif; ?>

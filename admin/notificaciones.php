@@ -18,7 +18,7 @@ $notifs = $conn->query(
 
 $conn->close();
 
-$iconos = ['comentario' => '💬', 'entrega' => '📬', 'sistema' => 'ℹ'];
+$iconos = ['comentario' => 'comentarios', 'entrega' => 'entregas', 'sistema' => 'notificacion'];
 $colores = ['comentario' => 'badge-gold', 'entrega' => 'badge-teal', 'sistema' => 'badge-gray'];
 ?>
 <!DOCTYPE html>
@@ -41,10 +41,11 @@ $colores = ['comentario' => 'badge-gold', 'entrega' => 'badge-teal', 'sistema' =
     .notif-row:last-child { border-bottom: none; }
     .notif-row:hover { background: var(--bg); }
     .notif-icon {
-      font-size: 1.4rem;
       flex-shrink: 0;
       margin-top: 0.1rem;
+      color: var(--gold);
     }
+    .notif-icon .ico { width: 1.4rem; height: 1.4rem; vertical-align: 0; }
     .notif-titulo { font-weight: 700; color: var(--navy); font-size: 0.95rem; margin-bottom: 0.2rem; }
     .notif-msg    { font-size: 0.88rem; color: var(--text-soft); margin-bottom: 0.35rem; }
     .notif-meta   { font-size: 0.75rem; color: var(--text-muted); }
@@ -70,7 +71,7 @@ $colores = ['comentario' => 'badge-gold', 'entrega' => 'badge-teal', 'sistema' =
       <?php else: ?>
         <?php foreach ($notifs as $n): ?>
         <div class="notif-row">
-          <div class="notif-icon"><?= $iconos[$n['tipo']] ?? 'ℹ' ?></div>
+          <div class="notif-icon"><?= icono($iconos[$n['tipo']] ?? 'notificacion') ?></div>
           <div style="flex:1;">
             <div class="notif-titulo"><?= sanitizar($n['titulo']) ?></div>
             <?php if ($n['mensaje']): ?>

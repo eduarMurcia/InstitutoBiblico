@@ -184,13 +184,13 @@ $conn->close();
     ?>
     <div class="com-card <?= $respondido ? 'respondido' : 'pendiente' ?>">
       <div class="com-meta">
-        <span>👤 <strong><?= sanitizar($com['estudiante']) ?></strong> — <?= sanitizar($com['email']) ?></span>
-        <span>📖 <?= sanitizar($com['curso']) ?> › <?= sanitizar($com['modulo']) ?> › <?= sanitizar($com['leccion']) ?></span>
-        <span>🕐 <?= date('d/m/Y H:i', strtotime($com['created_at'])) ?></span>
+        <span><?= icono('perfil','ico') ?> <strong><?= sanitizar($com['estudiante']) ?></strong> — <?= sanitizar($com['email']) ?></span>
+        <span><?= icono('libro','ico') ?> <?= sanitizar($com['curso']) ?> › <?= sanitizar($com['modulo']) ?> › <?= sanitizar($com['leccion']) ?></span>
+        <span><?= icono('reloj','ico') ?> <?= date('d/m/Y H:i', strtotime($com['created_at'])) ?></span>
         <?php if ($respondido): ?>
           <span class="badge badge-success" style="font-size:0.7rem;">✓ Respondido</span>
         <?php else: ?>
-          <span class="badge badge-gold" style="font-size:0.7rem;">⏳ Sin responder</span>
+          <span class="badge badge-gold" style="font-size:0.7rem;"><?= icono('pendiente','ico') ?> Sin responder</span>
         <?php endif; ?>
       </div>
 
