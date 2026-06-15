@@ -44,7 +44,8 @@ The external `lms_config/db.php` defines a `conectar()` function that returns a 
 | `respuestas_examen` | Individual question answers (text, file, calificacion) |
 | `certificados` | Issued on course completion |
 | `comentarios` | Per-lesson student comments + pastor replies |
-| `notificaciones_estudiante` | In-app notifications for graded exams / answered comments |
+| `notificaciones` | Admin in-app + email notifications (bell icon in admin panel) |
+| `notificaciones_estudiante` | Per-student in-app notifications for graded exams / answered comments |
 | `invitaciones` | Invitation codes for student registration |
 | `password_resets` | One-time tokens for password reset emails (1 hr expiry, `used` flag) |
 
@@ -78,6 +79,18 @@ fpdf.php        → PDF generation library (bundled)
 diagnostico.php → Dev-only DB/folder health check — delete from server after use
 ```
 
+### Exam question types
+
+`preguntas.tipo` can be `multiple` (4 options, auto-graded), `verdadero_falso` (auto-graded), `abierta` (open text, manually graded), or `archivo` (file upload, manually graded). When a submission contains `abierta` or `archivo` questions, `resultados_examen.pendiente_revision` is set to `1` and the exam appears in `admin/entregas.php` for the pastor to grade. Once all open questions are graded, the system recalculates the final score and notifies the student via `notificar_estudiante()`.
+
+### Notifications
+
+`includes/notificaciones.php` provides two independent systems:
+- `crear_notificacion(tipo, titulo, mensaje, url)` — writes to `notificaciones` (admin bell) and optionally emails all admins with `notif_email=1`.
+- `notificar_estudiante(uid, tipo, titulo, mensaje, url)` — writes to `notificaciones_estudiante` and optionally emails the student if `notif_email=1`.
+
+Both systems use PHP's native `mail()` with `=?UTF-8?B?...?=` subject encoding. No third-party mailer library is used.
+
 ### PDF generation
 
 PDFs (certificates, academic history, printable exams) use the bundled **FPDF** library (`fpdf.php`). The `font/` directory contains pre-encoded font metrics (Helvetica, Times variants). All FPDF output uses `iconv('UTF-8','windows-1252//TRANSLIT//IGNORE', ...)` to convert strings before passing them to FPDF, because FPDF does not support UTF-8 natively.
@@ -90,15 +103,21 @@ function u($s) { return iconv('UTF-8','windows-1252//TRANSLIT//IGNORE', $s ?? ''
 
 ### Layout helpers
 
-`includes/estudiante_layout.php` provides `estudiante_navbar(string $activa, array $extra)` and `estudiante_sidebar(string $activa)` — call these at the top of every student-facing page. Admin pages use `includes/admin_sidebar.php` instead.
+`includes/estudiante_layout.php` provides `estudiante_navbar(string $activa, array $extra)` and `estudiante_sidebar(string $activa)` — call these at the top of every student-facing page. Admin pages use `includes/admin_sidebar.php` which provides `admin_navbar(string $activa)` and `admin_sidebar(string $activa)` instead.
 
 ### Icons
 
-`includes/iconos.php` exports a single function `icono(string $name, string $class = 'ico'): string` that returns inline SVG. All icons are custom-drawn SVGs stored as a static array. Add new icons there; never use emoji or external icon libraries.
+`includes/iconos.php` exports a single function `icono(string $name, string $class = 'ico'): string` that returns inline SVG. All icons are custom-drawn SVGs stored as a static array. Add new icons there; never add emoji or new external icon libraries. The Tabler icons webfont is already imported in `styles.css` (`@tabler/icons-webfont@2.47.0`) and `ti-*` CSS classes are used in some pages — these are acceptable but prefer the `icono()` SVG system for new icons.
 
 ### CSS
 
 Single file `css/styles.css` using CSS custom properties (`--navy`, `--azul`, `--bg`, `--text-soft`, `--radius-lg`, etc.). No preprocessor, no framework.
+
+## Design and product context
+
+`DESIGN.md` — design token reference (colors, typography scale, component specs). Use it when adding new UI elements to stay consistent with the established system.
+
+`PRODUCT.md` — product context: user persona (mobile-first Colombian church members), brand personality (formal/doctrinal), and design principles. Consult before making UI decisions.
 
 ## Google OAuth
 

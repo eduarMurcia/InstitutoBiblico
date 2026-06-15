@@ -414,7 +414,7 @@ $tipo_info = [
             <tr><td colspan="5" style="text-align:center;color:var(--gray-mid);">Sin exámenes aún.</td></tr>
           <?php else: foreach ($todos_examenes as $ex): ?>
           <tr>
-            <td><strong style="color:var(--white);"><?= sanitizar($ex['titulo']) ?></strong></td>
+            <td><strong style="color:var(--text);"><?= sanitizar($ex['titulo']) ?></strong></td>
             <td style="font-size:0.85rem;"><span style="color:var(--gray-mid);"><?= sanitizar($ex['curso']) ?></span><br><?= sanitizar($ex['modulo']) ?></td>
             <td><span class="badge <?= $ex['num_preguntas']>0?'badge-success':'badge-gray' ?>"><?= $ex['num_preguntas'] ?></span></td>
             <td><span class="badge badge-gold"><?= $ex['puntaje_minimo'] ?>%</span></td>

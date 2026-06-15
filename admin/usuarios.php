@@ -93,7 +93,7 @@ $conn->close();
           <tbody>
           <?php foreach ($usuarios as $u): ?>
           <tr>
-            <td><strong style="color:var(--white);"><?= sanitizar($u['nombre']) ?></strong></td>
+            <td><strong style="color:var(--text);"><?= sanitizar($u['nombre']) ?></strong></td>
             <td style="font-size:0.82rem;"><?= sanitizar($u['email']) ?></td>
             <td>
               <span class="badge <?= $u['rol']==='admin' ? 'badge-gold' : 'badge-teal' ?>">
