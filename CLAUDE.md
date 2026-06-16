@@ -64,6 +64,26 @@ requerir_login();                   // or requerir_admin() for admin pages
 
 All user-facing output passes through `sanitizar()` (= `htmlspecialchars(strip_tags(trim(...)))`).
 
+Session keys written at login: `$_SESSION['usuario_id']` (int), `$_SESSION['rol']` (`'estudiante'`|`'admin'`), `$_SESSION['nombre']` (string), `$_SESSION['email']` (string).
+
+### SQL pattern
+
+All queries use **MySQLi prepared statements** when binding user-supplied strings. Integer values from `$_GET`/`$_POST` are cast with `(int)` and may be interpolated directly.
+
+```php
+// String input — always prepare
+$s = $conn->prepare("SELECT * FROM usuarios WHERE email = ?");
+$s->bind_param("s", $email);
+$s->execute();
+$res = $s->get_result();
+$s->close();
+
+// Integer-only — cast and interpolate
+$row = $conn->query("SELECT * FROM cursos WHERE id=" . (int)$_GET['id'])->fetch_assoc();
+```
+
+`sanitizar()` is for HTML output only — it is not a substitute for prepared statements.
+
 ### Directory layout
 
 ```

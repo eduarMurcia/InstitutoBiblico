@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruta de Prueba:LMS Instituto Bíblico Bautista</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:       #000a23;
+    --navy-light: #001440;
+    --gold:       #d19309;
+    --gold-light: #F3C332;
+    --gold-pale:  #f5edd0;
+    --bg:         #FAF7F0;
+    --bg-card:    #ffffff;
+    --text:       #1a1228;
+    --text-soft:  #4a4560;
+    --text-muted: #6b6880;
+    --border:     rgba(0,10,35,0.1);
+    --radius:     6px;
+    --radius-lg:  12px;
+    --shadow:     0 2px 20px rgba(0,10,35,0.08);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    padding: 0 0 60px;
+  }
+
+  /* ── Header ─────────────────────────────────────────── */
+  .doc-header {
+    background: var(--navy);
+    color: #fff;
+    padding: 40px 0 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .doc-header::after {
+    content: '';
+    display: block;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+  }
+  .doc-header .label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 10px;
+  }
+  .doc-header h1 {
+    font-family: 'IM Fell English', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.01em;
+    color: #fff;
+    line-height: 1.3;
+  }
+  .doc-header h1 strong { font-style: normal; color: var(--gold-light); }
+  .doc-header .meta {
+    margin-top: 14px;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.55);
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .doc-header .meta span::before { content: '\B7\A0\A0'; color: var(--gold); }
+
+  /* ── TOC ─────────────────────────────────────────────── */
+  .toc {
+    max-width: 860px;
+    margin: 32px auto 0;
+    padding: 0 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .toc a {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.8rem;
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .toc a:hover { background: var(--gold-pale); border-color: var(--gold); color: var(--navy); }
+
+  /* ── Content ─────────────────────────────────────────── */
+  .content { max-width: 860px; margin: 0 auto; padding: 40px 24px 0; }
+
+  /* ── Section ─────────────────────────────────────────── */
+  .section {
+    margin-bottom: 40px;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .section-head {
+    padding: 18px 24px;
+    background: var(--navy);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-head .num {
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 900;
+    font-size: 0.8rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-head h2 {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .section-head .badge {
+    margin-left: auto;
+    background: rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 2px 10px;
+    font-size: 0.72rem;
+    color: var(--gold-light);
+    white-space: nowrap;
+  }
+  .section-body { padding: 0 24px 8px; }
+
+  /* ── Subsection ──────────────────────────────────────── */
+  .subsection {
+    padding: 18px 0 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .subsection:last-child { border-bottom: none; }
+  .subsection h3 {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  /* ── Steps ───────────────────────────────────────────── */
+  .step-list { list-style: none; }
+  .step-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 7px 0;
+    border-bottom: 1px dashed rgba(0,10,35,0.07);
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-num {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+  .step-text { flex: 1; }
+  .step-text strong { color: var(--text); font-weight: 500; }
+  .step-verify {
+    margin-top: 3px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    padding-left: 10px;
+    border-left: 2px solid var(--gold-pale);
+  }
+  .step-verify b { color: var(--gold); font-weight: 600; }
+
+  /* ── Critical table ──────────────────────────────────── */
+  .crit-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  .crit-table thead th {
+    background: var(--navy);
+    color: var(--gold-light);
+    font-weight: 600;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 10px 14px;
+    text-align: left;
+  }
+  .crit-table tbody tr:nth-child(even) { background: var(--gold-pale); }
+  .crit-table tbody td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .crit-table tbody td:first-child {
+    font-weight: 700;
+    color: var(--navy);
+    width: 36px;
+    text-align: center;
+  }
+  .crit-table tbody td:nth-child(2) { color: var(--text-soft); }
+  .pass { color: #166534; font-weight: 600; }
+  .fail { color: #991b1b; font-weight: 600; }
+
+  /* ── Prereq box ──────────────────────────────────────── */
+  .prereq-box {
+    background: var(--gold-pale);
+    border: 1px solid rgba(209,147,9,0.3);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 28px;
+    font-size: 0.88rem;
+  }
+  .prereq-box strong { display: block; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .prereq-box ul { padding-left: 18px; color: var(--text-soft); }
+  .prereq-box li { padding: 2px 0; }
+
+  /* ── Footer ──────────────────────────────────────────── */
+  .doc-footer {
+    margin-top: 60px;
+    border-top: 1px solid var(--border);
+    padding: 20px 24px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── Print ───────────────────────────────────────────── */
+  @media print {
+    body { background: #fff; }
+    .toc { display: none; }
+    .section { box-shadow: none; break-inside: avoid; }
+    .section-head { background: #000a23 !important; -webkit-print-color-adjust: exact; }
+    .doc-header { background: #000a23 !important; -webkit-print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="doc-header">
+  <div class="label">Documento interno: Prueba de calidad</div>
+  <h1>Ruta de Prueba para Usuarios Reales<br><strong>Instituto Bíblico Bautista (LMS)</strong></h1>
+  <div class="meta">
+    <span>Versión 1.0, Junio 2026</span>
+    <span>Flujos: 3 principales + puntos críticos de seguridad</span>
+    <span>institutobiblicobautistacolombia.com/lms/</span>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <a href="#prereq">Prerrequisitos</a>
+  <a href="#flujo1">Flujo 1:Estudiante nuevo</a>
+  <a href="#flujo2">Flujo 2:Estudiante cursando</a>
+  <a href="#flujo3">Flujo 3:Administrador</a>
+  <a href="#criticos">Puntos críticos</a>
+</div>
+
+<div class="content">
+
+  <!-- Prerrequisitos -->
+  <div id="prereq" class="prereq-box" style="margin-top: 36px;">
+    <strong>Prerrequisitos antes de comenzar la prueba</strong>
+    <ul>
+      <li>Al menos un admin activo con correo configurado</li>
+      <li>Al menos 1 curso publicado con módulos, lecciones (audio + PDF) y examen</li>
+      <li>El examen debe tener preguntas de <em>todos</em> los tipos: múltiple, verdadero/falso, abierta, archivo</li>
+      <li>Un código de invitación válido generado desde <code>admin/invitaciones.php</code></li>
+      <li>Acceso al correo del usuario de prueba (para verificar emails)</li>
+    </ul>
+  </div>
+
+  <!-- ── FLUJO 1 ─────────────────────────────────────── -->
+  <div id="flujo1" class="section">
+    <div class="section-head">
+      <div class="num">1</div>
+      <h2>Flujo del Estudiante Nuevo:Registro y Primer Acceso</h2>
+      <div class="badge">9 pasos</div>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h3>Registro</h3>
+        <ul class="step-list">
+          <li>
+            <div class="step-num">1</div>
+            <div class="step-text">
+              <strong>Ir a la página principal</strong> (<code>/lms/</code>) y hacer clic en "Registrarse"
+            </div>
+          </li>
+          <li>
+            <div class="step-num">2</div>
+            <div class="step-text">
+              <strong>Registro con código inválido</strong>:ingresar datos reales pero un código de invitación incorrecto
+              <div class="step-verify"><b>Verificar:</b> aparece mensaje de error claro, no se crea la cuenta</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">3</div>
+            <div class="step-text">
+              <strong>Registro exitoso</strong>:ingresar nombre, apellido, correo, contraseña y el código de invitación válido
+              <div class="step-verify"><b>Verificar:</b> redirige al dashboard o muestra mensaje de bienvenida</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3>Inicio de sesión</h3>
+        <ul class="step-list">
+          <li>
+            <div class="step-num">4</div>
+            <div class="step-text">
+              <strong>Logout</strong> y volver a <code>/lms/login.php</code>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">5</div>
+            <div class="step-text">
+              <strong>Login con contraseña incorrecta</strong>
+              <div class="step-verify"><b>Verificar:</b> mensaje de error visible, no se inicia sesión</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">6</div>
+            <div class="step-text">
+              <strong>Login correcto</strong> con las credenciales recién creadas
+              <div class="step-verify"><b>Verificar:</b> llega al dashboard, nombre del usuario aparece en el navbar</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3>Recuperación de contraseña</h3>
+        <ul class="step-list">
+          <li>
+            <div class="step-num">7</div>
+            <div class="step-text">
+              <strong>Logout</strong> → clic en "Olvidé mi contraseña" → ingresar el correo del usuario de prueba
+              <div class="step-verify"><b>Verificar:</b> llega un email con el enlace de restablecimiento</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">8</div>
+            <div class="step-text">
+              <strong>Abrir el enlace</strong> del email → ingresar nueva contraseña → confirmar
+              <div class="step-verify"><b>Verificar:</b> contraseña cambia, se puede hacer login con la nueva</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">9</div>
+            <div class="step-text">
+              <strong>Intentar usar el mismo enlace de nuevo</strong>
+              <div class="step-verify"><b>Verificar:</b> enlace ya no es válido (expirado o usado), muestra error</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FLUJO 2 ─────────────────────────────────────── -->
+  <div id="flujo2" class="section">
+    <div class="section-head">
+      <div class="num">2</div>
+      <h2>Flujo del Estudiante Cursando:Aprendizaje Completo</h2>
+      <div class="badge">12 pasos</div>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h3>Explorar cursos</h3>
+        <ul class="step-list">
+          <li>
+            <div class="step-num">1</div>
+            <div class="step-text">
+              <strong>Dashboard</strong>:verificar que se muestran los cursos disponibles con portadas e íconos
+              <div class="step-verify"><b>Verificar:</b> imágenes de portada cargan correctamente, no hay espacios vacíos</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">2</div>
+            <div class="step-text">
+              <strong>Entrar al curso</strong>:ver descripción, lista de módulos y lecciones en orden correcto
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3>Consumir una lección</h3>
+        <ul class="step-list">
+          <li>
+            <div class="step-num">3</div>
+            <div class="step-text">
+              <strong>Abrir una lección</strong>:el reproductor de audio debe iniciar
+              <div class="step-verify"><b>Verificar:</b> audio se reproduce sin descargarse; intentar la URL directa <code>/uploads/audio/…</code> debe dar 403</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">4</div>
+            <div class="step-text">
+              <strong>Ver el PDF adjunto</strong> (si la lección lo tiene)
+              <div class="step-verify"><b>Verificar:</b> se abre en el visor integrado; URL directa a <code>/uploads/pdf/…</code> da 403</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">5</div>
+            <div class="step-text">
+              <strong>Marcar lección como completada</strong>
+              <div class="step-verify"><b>Verificar:</b> el progreso del módulo/curso se actualiza visualmente</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">6</div>
+            <div class="step-text">
+              <strong>Dejar un comentario</strong> al final de la lección
+              <div class="step-verify"><b>Verificar:</b> aparece en la lista inmediatamente; el admin lo ve en <code>admin/comentarios.php</code></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3>Examen de módulo</h3>
+        <ul class="step-list">
+          <li>
+            <div class="step-num">7</div>
+            <div class="step-text">
+              <strong>Completar todas las lecciones del módulo</strong> → botón de examen se habilita
+            </div>
+          </li>
+          <li>
+            <div class="step-num">8</div>
+            <div class="step-text">
+              <strong>Tomar el examen</strong>:responder los 4 tipos de pregunta:
+              opción múltiple, verdadero/falso, pregunta abierta (texto), subir archivo (foto o PDF escaneado)
+              <div class="step-verify"><b>Verificar:</b> todas las preguntas se pueden responder y enviar</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">9</div>
+            <div class="step-text">
+              <strong>Ver resultado inmediato</strong> de las preguntas auto-calificadas
+              <div class="step-verify"><b>Verificar:</b> aparece mensaje de "pendiente de revisión" para las preguntas abiertas/archivo</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">10</div>
+            <div class="step-text">
+              <strong>Intentar reenviar el examen</strong> después de haberlo completado
+              <div class="step-verify"><b>Verificar:</b> no es posible re-enviarlo, botón desaparece o muestra estado completado</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3>Notificaciones y certificado</h3>
+        <ul class="step-list">
+          <li>
+            <div class="step-num">11</div>
+            <div class="step-text">
+              <strong>Esperar la calificación del admin</strong> → recibir notificación en la campana del navbar
+              <div class="step-verify"><b>Verificar:</b> la campana muestra contador, al hacer clic lleva a la notificación correcta</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">12</div>
+            <div class="step-text">
+              <strong>Completar el 100% del curso</strong> → botón de certificado disponible → descargar PDF
+              <div class="step-verify"><b>Verificar:</b> PDF contiene nombre completo, nombre del curso y número de certificado único</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FLUJO 3 ─────────────────────────────────────── -->
+  <div id="flujo3" class="section">
+    <div class="section-head">
+      <div class="num">3</div>
+      <h2>Flujo del Administrador:Panel de Gestión</h2>
+      <div class="badge">8 pasos</div>
+    </div>
+    <div class="section-body">
+
+      <div class="subsection">
+        <h3>Acceso y cursos</h3>
+        <ul class="step-list">
+          <li>
+            <div class="step-num">1</div>
+            <div class="step-text">
+              <strong>Login como admin</strong> → verifica que redirige a <code>/admin/</code> y no al dashboard de estudiantes
+            </div>
+          </li>
+          <li>
+            <div class="step-num">2</div>
+            <div class="step-text">
+              <strong>Crear un curso nuevo</strong>:ingresar nombre, descripción, subir portada, elegir ícono y color
+              <div class="step-verify"><b>Verificar:</b> el curso aparece en el panel y en la vista de estudiantes</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">3</div>
+            <div class="step-text">
+              <strong>Agregar módulo y lección</strong> al curso:subir audio MP3 y PDF opcional
+              <div class="step-verify"><b>Verificar:</b> lección aparece en el orden correcto, audio y PDF accesibles desde la vista de estudiante</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3>Exámenes y entregas</h3>
+        <ul class="step-list">
+          <li>
+            <div class="step-num">4</div>
+            <div class="step-text">
+              <strong>Crear/editar examen</strong>:agregar preguntas de los 4 tipos, definir nota mínima
+            </div>
+          </li>
+          <li>
+            <div class="step-num">5</div>
+            <div class="step-text">
+              <strong>Calificar una entrega</strong> en <code>admin/entregas.php</code>:abrir respuesta abierta o descargar archivo subido por el estudiante → asignar puntaje
+              <div class="step-verify"><b>Verificar:</b> la nota final del estudiante se recalcula; el estudiante recibe notificación</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3>Comentarios, usuarios e invitaciones</h3>
+        <ul class="step-list">
+          <li>
+            <div class="step-num">6</div>
+            <div class="step-text">
+              <strong>Responder un comentario</strong> en <code>admin/comentarios.php</code>
+              <div class="step-verify"><b>Verificar:</b> el estudiante recibe notificación con la respuesta del pastor</div>
+            </div>
+          </li>
+          <li>
+            <div class="step-num">7</div>
+            <div class="step-text">
+              <strong>Gestionar usuarios</strong> en <code>admin/usuarios.php</code>:activar, desactivar, cambiar rol
+            </div>
+          </li>
+          <li>
+            <div class="step-num">8</div>
+            <div class="step-text">
+              <strong>Generar código de invitación</strong> en <code>admin/invitaciones.php</code>:definir fecha de expiración y límite de usos
+              <div class="step-verify"><b>Verificar:</b> el código funciona al registrar un estudiante nuevo, y expira según la configuración</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── PUNTOS CRÍTICOS ──────────────────────────────── -->
+  <div id="criticos" class="section">
+    <div class="section-head">
+      <div class="num">!</div>
+      <h2>Puntos Críticos de Seguridad y Acceso</h2>
+      <div class="badge">Probar en todos los flujos</div>
+    </div>
+    <div class="section-body" style="padding-top: 18px;">
+      <table class="crit-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Verificación</th>
+            <th>Resultado esperado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>A</td>
+            <td>Acceder directamente a <code>/uploads/audio/nombre.mp3</code></td>
+            <td class="fail">403 Forbidden</td>
+          </tr>
+          <tr>
+            <td>B</td>
+            <td>Acceder directamente a <code>/uploads/pdf/nombre.pdf</code></td>
+            <td class="fail">403 Forbidden</td>
+          </tr>
+          <tr>
+            <td>C</td>
+            <td>Acceder directamente a <code>/uploads/respuestas/archivo.ext</code></td>
+            <td class="fail">403 Forbidden</td>
+          </tr>
+          <tr>
+            <td>D</td>
+            <td>Acceder a <code>/admin/</code> desde una cuenta de estudiante</td>
+            <td class="fail">Redirige al dashboard o muestra 403</td>
+          </tr>
+          <tr>
+            <td>E</td>
+            <td>Acceder a cualquier página protegida sin sesión activa</td>
+            <td class="fail">Redirige a <code>login.php</code></td>
+          </tr>
+          <tr>
+            <td>F</td>
+            <td>Intentar reenviar un examen ya completado</td>
+            <td class="fail">No es posible; muestra estado "completado"</td>
+          </tr>
+          <tr>
+            <td>G</td>
+            <td>Intentar descargar certificado de un curso incompleto</td>
+            <td class="fail">Error 403 o mensaje de que falta completar el curso</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<div class="doc-footer">
+  Instituto Bíblico Bautista &middot; Documento interno de prueba v1.0 &middot; Junio 2026<br>
+  "Escudriñad las Escrituras" (Juan 5:39)
+</div>
+
+</body>
+</html>
